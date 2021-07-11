@@ -1,0 +1,58 @@
+#ifndef PARSER_HPP
+#define PARSER_HPP
+
+#include <QObject>
+
+#include <curl/curl.h>
+
+enum class methodType
+{
+    GET = 0,
+    POST
+};
+
+class Parser : public QObject
+{
+    Q_OBJECT
+
+private:
+    CURL* curl_;
+    struct curl_slist* headers_;
+    std::string response_body_;
+    std::string response_headers_;
+    int lastCode_;
+    bool proxy_ = false;
+
+    static size_t writeDataToStream(char* ptr, std::size_t sz, std::size_t nmemb, std::ostream* stream);
+    static size_t writeDataToString(char* ptr, size_t sz, size_t nmemb, std::string* buffer);
+
+public:
+    explicit Parser(QObject *parent = nullptr);
+    Parser() = delete;
+    Parser(const Parser& http) = delete;
+    Parser& operator=(const Parser& http) = delete;
+    //Curl_handler(bool verbose = true, bool autoref = true, bool proxy = false); //не нужен
+    ~Parser();
+
+    const std::string getResponse() const;
+    const std::string getResponseHeaders() const;
+    const std::string getLastEffectiveURL() const;
+    std::string getHostFromURL(const std::string& url);
+    int getLastCode() const;
+    CURL* getCurlObject() { return curl_; }
+
+    void setCookie(const std::string& value);
+    void setMaxRedirects(int16_t count);
+    void setHeader(const std::string& type, const std::string& value);
+
+    void findAndDeleteHeader(const std::string& type);
+    const std::string urlEncode(const std::string url);
+
+    int query(const std::string& url, const methodType& method = methodType::POST,
+              int port = 80, const std::string& data = "", bool ignoreCurlCode = 0);
+
+signals:
+
+};
+
+#endif // PARSER_HPP
