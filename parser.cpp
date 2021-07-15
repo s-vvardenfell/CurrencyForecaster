@@ -1,12 +1,12 @@
 #include "parser.hpp"
 
-Parser::Parser(QObject *parent) : QObject(parent)
+CurlHandler::CurlHandler()
 {
     curl_ = curl_easy_init();
 
-    if (!curl_)
-        throw std::runtime_error("Curl_handler::Curl_handler(): Cannot to init "
-            "curl object (function curl_easy_init()\n");
+//    if (!curl_)
+//        throw std::runtime_error("Curl_handler::Curl_handler(): Cannot to init "
+//            "curl object (function curl_easy_init()\n");
 
     curl_easy_setopt(curl_, CURLOPT_VERBOSE, true);
 
@@ -33,13 +33,13 @@ Parser::Parser(QObject *parent) : QObject(parent)
     //curl_easy_setopt(curl_, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
 }
 
-Parser::~Parser()
+CurlHandler::~CurlHandler()
 {
     if (curl_) curl_easy_cleanup(curl_);
     if (headers_) curl_slist_free_all(headers_);
 }
 
-std::string Parser::getHostFromURL(const std::string& url)
+std::string CurlHandler::getHostFromURL(const std::string& url)
 {
     std::string host = url;
 
@@ -52,7 +52,7 @@ std::string Parser::getHostFromURL(const std::string& url)
     return host;
 }
 
-int Parser::query(const std::string& url, const methodType& method, int port, const std::string& data, bool ignoreCurlCode)
+int CurlHandler::query(const std::string& url, const methodType& method, const std::string& data, int port, bool ignoreCurlCode)
 {
 
     std::string host = getHostFromURL(url);
@@ -78,35 +78,35 @@ int Parser::query(const std::string& url, const methodType& method, int port, co
     response_body_.clear();
     response_headers_.clear();
 
-    curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, Parser::writeDataToString);
+    curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, CurlHandler::writeDataToString);
     curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &this->response_body_);
-    curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, Parser::writeDataToString);
+    curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, CurlHandler::writeDataToString);
     curl_easy_setopt(curl_, CURLOPT_WRITEHEADER, &this->response_headers_);
 
     CURLcode result = curl_easy_perform(curl_);
 
-    if (result != CURLE_OK && !ignoreCurlCode)
-    {
-        throw std::runtime_error(std::string("Http::query(): ")
-            + curl_easy_strerror(result));
-    }
+//    if (result != CURLE_OK && !ignoreCurlCode)
+//    {
+//        throw std::runtime_error(std::string("Http::query(): ")
+//            + curl_easy_strerror(result));
+//    }
 
     curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &this->lastCode_);
 
     return this->lastCode_;
 }
 
-const std::string Parser::getResponse() const
+const std::string CurlHandler::getResponse() const
 {
     return response_body_;
 }
 
-const std::string Parser::getResponseHeaders() const
+const std::string CurlHandler::getResponseHeaders() const
 {
     return response_headers_;
 }
 
-const std::string Parser::getLastEffectiveURL() const
+const std::string CurlHandler::getLastEffectiveURL() const
 {
     char* url = nullptr;
     curl_easy_getinfo(curl_, CURLINFO_EFFECTIVE_URL, &url);
@@ -116,12 +116,12 @@ const std::string Parser::getLastEffectiveURL() const
     return url;
 }
 
-int Parser::getLastCode() const
+int CurlHandler::getLastCode() const
 {
     return this->lastCode_;
 }
 
-void Parser::findAndDeleteHeader(const std::string& type)
+void CurlHandler::findAndDeleteHeader(const std::string& type)
 {
     struct curl_slist* current = headers_;
     struct curl_slist* prev = nullptr;
@@ -146,25 +146,24 @@ void Parser::findAndDeleteHeader(const std::string& type)
     }
 }
 
-void Parser::setHeader(const std::string& type, const std::string& value)
+void CurlHandler::setHeader(const std::string& type, const std::string& value)
 {
     findAndDeleteHeader(type);
     headers_ = curl_slist_append(headers_, (type + ": " + value).c_str());
     curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers_);
 }
 
-void Parser::setMaxRedirects(int16_t count)
+void CurlHandler::setMaxRedirects(int16_t count)
 {
     curl_easy_setopt(curl_, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(curl_, CURLOPT_MAXREDIRS, count);
 }
 
-const std::string Parser::urlEncode(const std::string data)
+const std::string CurlHandler::urlEncode(const std::string data)
 {
     std::string result;
     char* escText = curl_easy_escape(curl_, data.c_str(), static_cast<int>(data.length()));
-    if (!escText) throw std::runtime_error("Http::URLencode(): Cannot"
-        " URL encode\n");
+//    if (!escText) throw std::runtime_error("Http::URLencode(): Cannot URL encode\n");
 
     result = escText;
     curl_free(escText);
@@ -172,19 +171,19 @@ const std::string Parser::urlEncode(const std::string data)
     return result;
 }
 
-void Parser::setCookie(const std::string& value)
+void CurlHandler::setCookie(const std::string& value)
 {
     curl_easy_setopt(curl_, CURLOPT_COOKIE, value.c_str());
 }
 
 
-size_t Parser::writeDataToStream(char* ptr, std::size_t sz, std::size_t nmemb, std::ostream* stream)
+size_t CurlHandler::writeDataToStream(char* ptr, std::size_t sz, std::size_t nmemb, std::ostream* stream)
 {
     (*stream) << std::string(ptr, sz * nmemb);
     return sz * nmemb;
 }
 
-size_t Parser::writeDataToString(char* ptr, size_t sz, size_t nmemb, std::string* buffer)
+size_t CurlHandler::writeDataToString(char* ptr, size_t sz, size_t nmemb, std::string* buffer)
 {
     if (buffer)
     {

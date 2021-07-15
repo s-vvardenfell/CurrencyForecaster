@@ -1,7 +1,9 @@
-#ifndef PARSER_HPP
-#define PARSER_HPP
+#ifndef PARSER_H
+#define PARSER_H
 
-#include <QObject>
+#include <string>
+#include <exception>
+
 
 #include <curl/curl.h>
 
@@ -11,9 +13,8 @@ enum class methodType
     POST
 };
 
-class Parser : public QObject
+class CurlHandler
 {
-    Q_OBJECT
 
 private:
     CURL* curl_;
@@ -27,12 +28,10 @@ private:
     static size_t writeDataToString(char* ptr, size_t sz, size_t nmemb, std::string* buffer);
 
 public:
-    explicit Parser(QObject *parent = nullptr);
-    Parser() = delete;
-    Parser(const Parser& http) = delete;
-    Parser& operator=(const Parser& http) = delete;
-    //Curl_handler(bool verbose = true, bool autoref = true, bool proxy = false); //не нужен
-    ~Parser();
+    CurlHandler();
+    CurlHandler(const CurlHandler& http) = delete;
+    CurlHandler& operator=(const CurlHandler& http) = delete;
+    ~CurlHandler();
 
     const std::string getResponse() const;
     const std::string getResponseHeaders() const;
@@ -49,10 +48,8 @@ public:
     const std::string urlEncode(const std::string url);
 
     int query(const std::string& url, const methodType& method = methodType::POST,
-              int port = 80, const std::string& data = "", bool ignoreCurlCode = 0);
-
-signals:
+              const std::string& data = "", int port = 443, bool ignoreCurlCode = 0);
 
 };
 
-#endif // PARSER_HPP
+#endif // PARSER_H
