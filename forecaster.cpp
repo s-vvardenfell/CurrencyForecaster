@@ -7,21 +7,34 @@ Forecaster::Forecaster(QObject *parent) : QObject(parent)
     //переименовать файлы классов curl и db handler
     //добавить исключения
     //logPage мб должен принимать номер документа-название для удобства
-    //rbk_forekast_data_ можно заменить на структуру или что-то общее для всех сайтов?
-        //в тот же map можно после очистки положить другие данные
-
-    //спарсить rambler
     //добавить в rambler и рбк проверку вдруг появится новый источник/обновятся данные
+
+    //там где week year month пересчитать в рельные даты мб? будет единообразно с рбк
+
+    //парсить тарифы того банка где буду менять
+    //логин в лк альфы? или тиньков? мб александровкий - лучше тариф чем в альфе
+
+    //forecaster дб таки parser'ом
+    //отдельный класс который работает с площадкой - логин, продажа-покупка AccountHandler
+
+
+    //getForecasts() вызывает функции-парсеры разных площадок
+    //мб storeForecasts() //полученные прогнозы сохраняет в бд
+    //мб тогда не нужны переменные - члены rmbr_vec_ и тд,
+    //ф-ии парсинга будут передавать результат работы
+    //сразу в ф-ю сохранения в бд, мб вызываться ею или вызываться в аргументах
+    //какой класс создает чьи экземпляры? мб дб_хандлер создает экземпляр форекастера - парсера
+        //и получает getRBK / getRMBRData() ? геттерами
 
 
     curl_handler_ = std::make_unique<CurlHandler>();
-//    db_handler_ = std::make_unique<DataBaseHandler>();
+//    db_handler_ = std::make_unique<DataBaseHandler>(); //мб дб_хандлер создает экземпляр форекастера
 
 }
 
 bool Forecaster::startProgram()
 {
-//    getForecastsFromRBK();
+    getForecastsFromRBK();
     getForecastsFromRmbr();
 
     return true;
@@ -40,7 +53,7 @@ bool Forecaster::getForecastsFromRBK()
     const std::string url_rbk{"https://quote.rbc.ru/ticker/59111"};
     curl_handler_->query(url_rbk, methodType::GET);
 
-    logPage();//1
+    logPage();
 
     CDocument html;
     html.parse(curl_handler_->getResponse());
@@ -54,19 +67,27 @@ bool Forecaster::getForecastsFromRBK()
 
             //cerr<< select.nodeAt(1).text();
 
+
     for (std::size_t i = 0; i < select.nodeNum(); ++i)
     {
-
-        rbk_forekast_data_.emplace("forecast_date", html.find(".q-item__review__date_big").nodeAt(i).text()); //дата прогноза
-
         CNode node = select.nodeAt(i);
-        rbk_forekast_data_.emplace("sum", node.find(".q-item__review__sum").nodeAt(0).text()); //прогноз стоимость
-        rbk_forekast_data_.emplace("change", node.find(".q-item__review__change").nodeAt(0).text()); //изменение прогноза? или что
-        rbk_forekast_data_.emplace("to_date", node.find(".q-item__review__value").nodeAt(1).text()); //к дате
-        rbk_forekast_data_.emplace("forecaster", node.find(".q-item__review__value").nodeAt(2).text()); //прогнозист
-        rbk_forekast_data_.emplace("accuracy", node.find(".q-item__review__value").nodeAt(3).text()); //точность
+
+        ForecastData rdata{};
+
+        rdata.forecaster_ = node.find(".q-item__review__value").nodeAt(2).text();
+        rdata.value_ = normalizeString(node.find(".q-item__review__sum").nodeAt(0).text());
+        rdata.forecast_date_ = html.find(".q-item__review__date_big").nodeAt(i).text();
+        rdata.period_ = node.find(".q-item__review__value").nodeAt(1).text();
+        rdata.accuracy_ = normalizeString(node.find(".q-item__review__value").nodeAt(3).text());
+        rdata.value_review_= normalizeString(node.find(".q-item__review__change").nodeAt(0).text());
+
+        rbk_vec_.push_back(rdata);
     }
 
+//    for(const auto& forecast: rbk_vec_)
+//    {
+//        qDebug()<<QString::fromStdString(forecast.forecaster_ +" " + forecast.forecast_date_+" "+forecast.value_+" "+forecast.period_+" "+forecast.accuracy_+" "+forecast.value_review_);
+//    }
 
     return true;
 }
@@ -81,20 +102,40 @@ bool Forecaster::getForecastsFromRmbr()
 
     curl_handler_->query(url_rmb, methodType::GET);
 
-    logPage();//2
-
     CDocument html;
     html.parse(curl_handler_->getResponse());
-    CSelection select = html.find(".finance__forecast");
+    CSelection select = html.find(".j-currency-forecast");
 
-//    qDebug()<< QString::fromStdString(select.nodeAt(0).text());
-    saveDocument(path + "page_data",select.nodeAt(0).text());
+    json data = json::parse(select.nodeAt(0).attribute("data-data").data());
 
-//    json jsonData = json::parse(curl_handler_->getResponse().data());
+    std::array<std::string, 3> periods = {"week", "month", "year"};
 
-//    jsonData = jsonData["forecaster"];
+    for(const auto& period: periods)
+    {
+        json jdata_period = data[period];
 
-//    qDebug()<<QString::fromStdString(jsonData["char_code"].get<std::string>());
+        for(size_t i = 0; i<jdata_period.size(); ++i)
+        {
+            ForecastData rdata{};
+            json temp = jdata_period[i];
+
+            rdata.forecaster_ = temp["forecaster"]["name"].get<std::string>();
+
+            std::string temp_str = temp["date"].get<std::string>();
+            rdata.forecast_date_ = temp_str.substr(0, temp_str.find('T'));
+
+            rdata.value_ = to_string(temp.find("value").value());
+            rdata.period_ = period;
+
+            rmbr_vec_.push_back(rdata);
+
+        }
+    }
+
+//    for(const auto& forecast: rmbr_vec_)
+//    {
+//        qDebug()<<QString::fromStdString(forecast.forecaster_ +" " + forecast.forecast_date_+" "+forecast.value_+" "+forecast.period_+" "+forecast.accuracy_+" "+forecast.value_review_);
+//    }
 
     return true;
 }
@@ -183,7 +224,26 @@ void Forecaster::logPage(const std::string& data) const
     ++page_counter;
 }
 
+void Forecaster::normalizeString(std::string& where, const std::string& what)
+{
+    size_t to_remove{};
 
+    while((to_remove = where.find(what)) != std::string::npos)
+        where.erase(to_remove, 1);
+
+}
+
+std::string Forecaster::normalizeString(std::string where)
+{
+    size_t to_remove{};
+
+    while((to_remove = where.find('\t')) != std::string::npos) {where.erase(to_remove, 1);}
+    while((to_remove = where.find('\r')) != std::string::npos) {where.erase(to_remove, 1);}
+    while((to_remove = where.find('\n')) != std::string::npos) {where.erase(to_remove, 1);}
+    while((to_remove = where.find(' ')) != std::string::npos) {where.erase(to_remove, 1);}
+
+    return where;
+}
 
 
 

@@ -1,5 +1,5 @@
-#ifndef DATA_HANDLER_H
-#define DATA_HANDLER_H
+#ifndef DB_HANDLER_H
+#define DB_HANDLER_H
 
 #include <QObject>
 
@@ -16,4 +16,4 @@ signals:
 
 };
 
-#endif // DATA_HANDLER_H
+#endif // DB_HANDLER_H
