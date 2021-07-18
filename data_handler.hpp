@@ -5,7 +5,7 @@
 
 
 
-
+//убрать QObject или понадобится для работы с бд?
 class DataBaseHandler : public QObject
 {
     Q_OBJECT

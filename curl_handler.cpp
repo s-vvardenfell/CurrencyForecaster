@@ -1,6 +1,7 @@
-#include "parser.hpp"
+#include "curl_handler.hpp"
 
-CurlHandler::CurlHandler()
+CurlHandler::CurlHandler() :
+    curl_(nullptr), headers_(nullptr), response_body_(), response_headers_(), lastCode_(0)
 {
     curl_ = curl_easy_init();
 
@@ -85,11 +86,11 @@ int CurlHandler::query(const std::string& url, const methodType& method, const s
 
     CURLcode result = curl_easy_perform(curl_);
 
-//    if (result != CURLE_OK && !ignoreCurlCode)
-//    {
-//        throw std::runtime_error(std::string("Http::query(): ")
-//            + curl_easy_strerror(result));
-//    }
+    if (result != CURLE_OK && !ignoreCurlCode)
+    {
+        throw CurlHandlerException(std::string("Https::query(): ")
+            + curl_easy_strerror(result));
+    }
 
     curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &this->lastCode_);
 

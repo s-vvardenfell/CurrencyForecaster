@@ -1,6 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include "forecaster.hpp"
+
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +20,18 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+    try
+    {
+        Forecaster fc;
+        fc.startProgram();
+
+    }  catch (std::exception& ex)
+    {
+        qDebug()<<ex.what()<<"\n";
+    }
+
+
 
     return app.exec();
 }

@@ -1,11 +1,12 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef CURL_HANDLER_H
+#define CURL_HANDLER_H
 
 #include <string>
 #include <exception>
 
-
 #include <curl/curl.h>
+
+#include "exception.hpp"
 
 enum class methodType
 {
@@ -52,4 +53,4 @@ public:
 
 };
 
-#endif // PARSER_H
+#endif // CURL_HANDLER_H
