@@ -1,11 +1,10 @@
-# Code::Blocks files
 *.depend
 *.cbp
 *.layout
 *.pro
 *.user
+*.txt
 
-# Qt files
 *.qrc
 
 #Catalogues
