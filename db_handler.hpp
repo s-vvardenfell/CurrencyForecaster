@@ -12,18 +12,23 @@
 
 #include "parser.hpp"
 
+enum class OperationType
+{
+    SELL,
+    BUY
+};
+
 typedef struct Purchase
 {
     std::string date;
-    int         amount;
+    std::string type;
+    double      amount;
     double      price;
     double      sum;
     std::string bank_name;
     std::string account;
 
 }Purchase;
-
-
 
 class DataBaseHandler
 {
@@ -32,24 +37,26 @@ private:
     sql::Connection *connection_;
 
     std::unique_ptr<Parser> parser_handler_;
+
     std::vector<std::string> settings_;
 
     void readSettings();
-    void connect_to_DB();
+    void connectToDB();
 
 
 
-public:
+public://проверить остальные методы на const
     explicit DataBaseHandler();
 
-    void create_table();
+    void createTable();
 
-    void insert_purchase(const Purchase& purchase);
+    bool insertBuySellOperation(const Purchase& purchase);
 
     void insertForecastsToDB();
     void insertCurrencyExchangeRateToDB();
 
-
+    double getAccountBalance() const;
+    bool updateBankAccount() const;
 
 };
 

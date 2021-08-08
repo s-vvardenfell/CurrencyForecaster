@@ -16,12 +16,18 @@ import QtQuick.Controls 2.12
 */
 
 
+
 Window {
-    width: 640
+    width: 840
     height: 480
     visible: true
     title: qsTr("Currency Manager")
 
+    Connections
+    {
+        target: Account
+//        onSendUNameToQmlForHeaderSignl: page3.title = text;
+    }
 
     GridLayout
     {
@@ -46,8 +52,14 @@ Window {
                 Button
                 {
                     id: buyBtn
-                    text: "Buy";
+                    text: "Buy $";
                     Layout.fillWidth: true
+
+                    onPressed:
+                    {
+                        Account.buy(spinboxBuy.value);
+                        spinboxBuy.value = 0.0
+                    }
                 }
 
                 SpinBox
@@ -63,8 +75,14 @@ Window {
                 Button
                 {
                     id: buySell
-                    text: "Sell";
+                    text: "Sell $";
                     Layout.fillWidth: true
+
+                    onPressed:
+                    {
+                        Account.sell(spinboxSell.value);
+                        spinboxSell.value = 0.0
+                    }
                 }
 
                 SpinBox
@@ -77,14 +95,32 @@ Window {
             Button
             {
                 id: sellAll
-                text: "Sell all";
+                text: "Sell all $";
                 Layout.fillWidth: true
+
+                onPressed:
+                {
+                    Account.sellAll();
+                    spinboxBuy.value = 0.0
+                    spinboxSell.value = 0.0
+                }
+            }
+
+            Label
+            {
+                Layout.alignment: Qt.AlignCenter
+                id: lblLV
+//                horizontalAlignment: Text.AlignHCenter
+                text: qsTr("Purchases: ")
+                //у каждой Purchase должны выводиться данные из бд
+
             }
 
 //            ListView
             ColumnLayout
             {
                 id: listView
+                spacing: 2
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true

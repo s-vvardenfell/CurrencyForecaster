@@ -1,9 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include "db_handler.hpp"
+#include "account_handler.hpp"
 
-#include <iomanip> //для put_time
 //TODO
 //добавить исключения
 //добавить в rambler и рбк проверку вдруг появится новый источник/обновятся данные
@@ -14,44 +15,49 @@
     //альфа/тинькоф/газпромбанк(!)
 //логин в лк альфы? или тиньков? мб александровкий - лучше тариф чем в альфе /газпромбанк
 
-//отдельный класс который работает с площадкой - логин, продажа-покупка AccountHandler
+//CurlHandler стоит прокси не на локалхост
+
+//хранение копеек/центов в дробной части мб плохой идеей, мб нужна структура доллар
+
+//curl handler мб стоит таки переделать метод query на post и get
+
+//возможно получение курса обмена придется перенести в account manager
+    //тк parser занимается только открытыми данными
+
+//дб либо 2 разные таблицы на покупку-продажу
+    //либо нужен стоблец "тип процедуры" иначе непонятно покупал или продавал!
+//обрезать хранение в таблице до 2-3 знаков после запятой
 
 
+//таблица account balance и ее обновление - в ф-ях sell и buy
 
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-
-    QGuiApplication app(argc, argv);
-
-    QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
-
-
-
-
     try
     {
-//        std::time_t t = std::time(nullptr);
-//        std::tm tm = *std::localtime(&t);
-//        stringstream ss; ss<< put_time(&tm, "%H:%M:%S %d.%m.%Y");
-//        Purchase pur{ss.str(), 25, 78.25, 1956.25, "Sber", "1234567890"};
 
-//        DataBaseHandler db;
-//        db.insert_purchase(pur);
+        QGuiApplication app(argc, argv);
+
+        QQmlApplicationEngine engine;
+        const QUrl url(QStringLiteral("qrc:/main.qml"));
+        QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                         &app, [url](QObject *obj, const QUrl &objUrl) {
+            if (!obj && url == objUrl)
+                QCoreApplication::exit(-1);
+        }, Qt::QueuedConnection);
 
 
 
+        AccountHandler acc;
+        engine.rootContext()->setContextProperty("Account", &acc);
 
 
+
+        engine.load(url);
+        return app.exec();
 
     }
     catch (sql::SQLException &e)
@@ -68,6 +74,4 @@ int main(int argc, char *argv[])
     }
 
 
-
-    return app.exec();
 }

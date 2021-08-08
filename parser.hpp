@@ -21,6 +21,16 @@
 
 using json = nlohmann::json;
 
+typedef struct ForecastData
+{
+    std::string Parser_;
+    std::string value_;
+    std::string forecast_date_;
+    std::string period_;
+    std::string accuracy_{"null"};
+    std::string value_review_{"null"};
+
+}ForecastData;
 
 class Parser
 {
@@ -28,23 +38,26 @@ class Parser
 public:
     explicit Parser();
 
-    std::vector<Programm::ForecastData> getForecastsFromRBK();
-    std::vector<Programm::ForecastData> getForecastsFromRmbr();
+    std::vector<ForecastData> getForecastsFromRBK();
+    std::vector<ForecastData> getForecastsFromRmbr();
+    double getCurrentExcangeRate();
 
-    bool parseCurrencyExchangeRateGPB(); //TODO + getter
 private:
     std::unique_ptr<CurlHandler> curl_handler_;
 
-    std::vector<Programm::ForecastData> rmbr_data_;
-    std::vector<Programm::ForecastData> rbk_data_;
+    std::vector<ForecastData> rmbr_data_;
+    std::vector<ForecastData> rbk_data_;
 
     std::map<std::string, std::string> parameters_;
+
+    double price_;
 
     //возвращаемые значения и хранение данных продумать
     //мб стоит инсертить данные прогноза в бд на текущий день
     //а в нужном месте забирать
     bool parseForecastRBK();
     bool parseForecastRmbr();
+    bool parseCurrencyExchangeRate(); //TODO
 
 
 

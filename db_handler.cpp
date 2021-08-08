@@ -6,7 +6,7 @@ DataBaseHandler::DataBaseHandler(): driver_(nullptr),
     connection_(nullptr), parser_handler_(nullptr)
 {
     readSettings();
-    connect_to_DB();
+    connectToDB();
 
     parser_handler_ = make_unique<Parser>();
 
@@ -27,7 +27,7 @@ void DataBaseHandler::readSettings()
 
 }
 
-void DataBaseHandler::connect_to_DB()
+void DataBaseHandler::connectToDB()
 {
     driver_ = get_driver_instance();
     connection_ = driver_->connect(settings_.at(0), settings_.at(1), settings_.at(2));
@@ -48,7 +48,31 @@ void DataBaseHandler::insertCurrencyExchangeRateToDB()
 
 }
 
-void DataBaseHandler::create_table()
+double DataBaseHandler::getAccountBalance() const
+{
+    sql::Statement *stmt;
+    sql::ResultSet *res;
+
+    stmt = connection_->createStatement();
+    res = stmt->executeQuery("SELECT balance FROM balance WHERE id = (SELECT MAX(id) FROM balance);");
+
+    res->next();
+    double balance = res->getInt("balance");
+
+    delete res;
+    delete stmt;
+
+    return balance;
+}
+
+bool DataBaseHandler::updateBankAccount() const
+{
+
+}
+
+
+
+void DataBaseHandler::createTable()
 {
     sql::Statement *stmt;
     stmt = connection_->createStatement();
@@ -58,21 +82,25 @@ void DataBaseHandler::create_table()
     delete stmt;
 }
 
-void DataBaseHandler::insert_purchase(const Purchase& purchase)
+bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)
 {
     sql::PreparedStatement *pstmt;
     pstmt = connection_->prepareStatement(
-    "INSERT INTO my_purchases (date, amount, price, sum, bank_name, account) VALUES (?,?,?,?,?,?);");
+    "INSERT INTO my_purchases (date, type, amount, price, sum, bank_name, account) VALUES (?,?,?,?,?,?,?);");
 
     pstmt->setString(1, purchase.date);
-    pstmt->setInt(2, purchase.amount);
-    pstmt->setDouble(3, purchase.price);
-    pstmt->setDouble(4, purchase.sum);
-    pstmt->setString(5, purchase.bank_name);
-    pstmt->setString(6, purchase.account);
+    pstmt->setString(2, purchase.type);
+    pstmt->setDouble(3, purchase.amount);
+    pstmt->setDouble(4, purchase.price);
+    pstmt->setDouble(5, purchase.sum);
+    pstmt->setString(6, purchase.bank_name);
+    pstmt->setString(7, purchase.account);
 
     pstmt->executeUpdate();
     delete pstmt;
+
+    //TODO нужна проверка
+    return true;
 }
 
 

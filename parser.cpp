@@ -2,7 +2,7 @@
 
 
 
-Parser::Parser() : curl_handler_(nullptr)
+Parser::Parser() : curl_handler_(nullptr), rmbr_data_(), rbk_data_(), parameters_(),  price_()
 {
     curl_handler_ = std::make_unique<CurlHandler>();
 
@@ -39,7 +39,7 @@ bool Parser::parseForecastRBK()
     {
         CNode node = select.nodeAt(i);
 
-        Programm::ForecastData rdata{};
+        ForecastData rdata{};
 
         rdata.Parser_ = node.find(".q-item__review__value").nodeAt(2).text();
         rdata.value_ = Programm::normalizeString(node.find(".q-item__review__sum").nodeAt(0).text());
@@ -83,7 +83,7 @@ bool Parser::parseForecastRmbr()
 
         for(size_t i = 0; i<jdata_period.size(); ++i)
         {
-            Programm::ForecastData rdata{};
+            ForecastData rdata{};
             json temp = jdata_period[i];
 
             rdata.Parser_ = temp["Parser"]["name"].get<std::string>();
@@ -107,7 +107,15 @@ bool Parser::parseForecastRmbr()
     return true;
 }
 
-bool Parser::parseCurrencyExchangeRateGPB()
+double Parser::getCurrentExcangeRate()
+{
+   //мб где-то в конструкторе вызывать parseCurrencyExchangeRate
+    price_ = 78.45;
+
+    return price_;
+}
+
+bool Parser::parseCurrencyExchangeRate()
 {
 //    curl_handler_->setHeader("Host", "www.gazprombank.ru");
 
@@ -138,16 +146,17 @@ bool Parser::parseCurrencyExchangeRateGPB()
 //    Programm::saveDocument("gpb_page.txt", curl_handler_->getResponse());
 
 
+
     return true;
 }
 
 
-std::vector<Programm::ForecastData> Parser::getForecastsFromRBK()
+std::vector<ForecastData> Parser::getForecastsFromRBK()
 {
     return rmbr_data_;
 }
 
-std::vector<Programm::ForecastData> Parser::getForecastsFromRmbr()
+std::vector<ForecastData> Parser::getForecastsFromRmbr()
 {
     return rbk_data_;
 }
