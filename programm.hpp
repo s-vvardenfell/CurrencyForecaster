@@ -9,7 +9,6 @@
 
 using namespace std;
 
-static const std::string path {"/home/chaginsergey/Qt Projects/pages/"};
 
 namespace Programm
 {
@@ -27,7 +26,7 @@ typedef struct ForecastData
 
     const string loadDocument(const string& file_name);
     bool saveDocument(const std::string& filename, const std::string& data);
-    const std::string parseDataFromPage(const std::string& where, const std::string& lstr, const std::string& rstr, bool with_left = false);
+    const std::string parseDataFromPage(const std::string& where, const std::string& lstr, const std::string& rstr, bool with_left);
     void normalizeString(std::string& where, const std::string& what);
     std::string normalizeString(std::string where);
 

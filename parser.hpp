@@ -30,8 +30,8 @@ public:
 
     std::vector<Programm::ForecastData> getForecastsFromRBK();
     std::vector<Programm::ForecastData> getForecastsFromRmbr();
-    std::vector<Programm::ForecastData> getCurrencyExchangeRate();
 
+    bool parseCurrencyExchangeRateGPB(); //TODO + getter
 private:
     std::unique_ptr<CurlHandler> curl_handler_;
 
@@ -40,9 +40,13 @@ private:
 
     std::map<std::string, std::string> parameters_;
 
-    bool parseRBK();
-    bool parseRmbr();
-    bool parseCurrencyExchangeRate(); //TODO + getter
+    //возвращаемые значения и хранение данных продумать
+    //мб стоит инсертить данные прогноза в бд на текущий день
+    //а в нужном месте забирать
+    bool parseForecastRBK();
+    bool parseForecastRmbr();
+
+
 
 };
 

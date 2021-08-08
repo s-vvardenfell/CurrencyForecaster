@@ -5,16 +5,19 @@
 Parser::Parser() : curl_handler_(nullptr)
 {
     curl_handler_ = std::make_unique<CurlHandler>();
+
+    curl_handler_->setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) 	Chrome/91.0.4472.124 Safari/537.36");
+    curl_handler_->setHeader("Connection", "Keep-Alive");
+    curl_handler_->setHeader("Accept-Language", "en-US,en;q=0.9");
+
 }
 
-bool Parser::parseRBK()
+bool Parser::parseForecastRBK()
 {
-    curl_handler_->setHeader("Connection", "Keep-Alive");
+    //убрал хедеры в конструктор
     curl_handler_->setHeader("Host", "quote.rbc.ru");
-    curl_handler_->setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) 	Chrome/91.0.4472.124 Safari/537.36");
     curl_handler_->setHeader("Accept", "text/html, application/xhtml+xml, image/jxr, */*");
     curl_handler_->setHeader("Referer", "https://www.google.com/");
-    curl_handler_->setHeader("Accept-Language", "en-US,en;q=0.9");
 
     const std::string url_rbk{"https://quote.rbc.ru/ticker/59111"};
     curl_handler_->query(url_rbk, methodType::GET);
@@ -57,7 +60,7 @@ bool Parser::parseRBK()
 }
 
 
-bool Parser::parseRmbr()
+bool Parser::parseForecastRmbr()
 {
     curl_handler_->setHeader("Host", "finance.rambler.ru");
     curl_handler_->setHeader("Referer", "https://www.yandex.ru/");
@@ -104,6 +107,40 @@ bool Parser::parseRmbr()
     return true;
 }
 
+bool Parser::parseCurrencyExchangeRateGPB()
+{
+//    curl_handler_->setHeader("Host", "www.gazprombank.ru");
+
+//    const std::string url{"https://www.gazprombank.ru/personal/courses/"};
+
+//    curl_handler_->query(url, methodType::GET);
+
+//    string doc = Programm::loadDocument("gpb_page.txt");
+
+//    CDocument html;
+//    html.parse(doc);
+
+//    CSelection select = html.find("nr-courses-table");
+
+//    qDebug()<<select.nodeNum();
+
+
+
+
+
+
+    ///html/body/div[1]/div[1]/div[1]/div/div[3]/div[2]/div[3]/div[1]/div[2]/div[4]/span[2]
+    //div.nr-courses-table__line:nth-child(2) > div:nth-child(4) > span:nth-child(2)
+//
+//    71.46
+//    74.92
+
+//    Programm::saveDocument("gpb_page.txt", curl_handler_->getResponse());
+
+
+    return true;
+}
+
 
 std::vector<Programm::ForecastData> Parser::getForecastsFromRBK()
 {
@@ -114,6 +151,7 @@ std::vector<Programm::ForecastData> Parser::getForecastsFromRmbr()
 {
     return rbk_data_;
 }
+
 
 
 

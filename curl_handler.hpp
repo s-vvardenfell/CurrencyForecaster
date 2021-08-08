@@ -24,6 +24,7 @@ private:
     std::string response_headers_;
     int lastCode_;
     bool proxy_ = false;
+    bool verbose_ = false;
 
     static size_t writeDataToStream(char* ptr, std::size_t sz, std::size_t nmemb, std::ostream* stream);
     static size_t writeDataToString(char* ptr, size_t sz, size_t nmemb, std::string* buffer);

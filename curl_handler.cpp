@@ -9,7 +9,7 @@ CurlHandler::CurlHandler() :
 //        throw std::runtime_error("Curl_handler::Curl_handler(): Cannot to init "
 //            "curl object (function curl_easy_init()\n");
 
-    curl_easy_setopt(curl_, CURLOPT_VERBOSE, true);
+    curl_easy_setopt(curl_, CURLOPT_VERBOSE, verbose_);
 
     if (proxy_)
     {

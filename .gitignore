@@ -6,6 +6,7 @@
 *.txt
 
 *.qrc
+*.qml
 
 #Catalogues
 /bin

@@ -12,12 +12,24 @@
 
 #include "parser.hpp"
 
-//убрать QObject или понадобится для работы с бд?
+typedef struct Purchase
+{
+    std::string date;
+    int         amount;
+    double      price;
+    double      sum;
+    std::string bank_name;
+    std::string account;
+
+}Purchase;
+
+
+
 class DataBaseHandler
 {
 private:
     sql::Driver *driver_;
-    sql::Connection *connect_;
+    sql::Connection *connection_;
 
     std::unique_ptr<Parser> parser_handler_;
     std::vector<std::string> settings_;
@@ -30,15 +42,14 @@ private:
 public:
     explicit DataBaseHandler();
 
-     void create_table();
+    void create_table();
+
+    void insert_purchase(const Purchase& purchase);
 
     void insertForecastsToDB();
     void insertCurrencyExchangeRateToDB();
 
 
-
-
-signals:
 
 };
 

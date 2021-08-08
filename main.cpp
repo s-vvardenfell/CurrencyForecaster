@@ -3,6 +3,7 @@
 
 #include "db_handler.hpp"
 
+#include <iomanip> //для put_time
 //TODO
 //добавить исключения
 //добавить в rambler и рбк проверку вдруг появится новый источник/обновятся данные
@@ -11,11 +12,11 @@
 
 //парсить тарифы того банка где буду менять
     //альфа/тинькоф/газпромбанк(!)
-//логин в лк альфы? или тиньков? мб александровкий - лучше тариф чем в альфе
+//логин в лк альфы? или тиньков? мб александровкий - лучше тариф чем в альфе /газпромбанк
 
 //отдельный класс который работает с площадкой - логин, продажа-покупка AccountHandler
 
-//не должно быть кучи try-catch в каждой функции! это бессмысленно
+
 
 int main(int argc, char *argv[])
 {
@@ -34,14 +35,19 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+
+
+
     try
     {
+//        std::time_t t = std::time(nullptr);
+//        std::tm tm = *std::localtime(&t);
+//        stringstream ss; ss<< put_time(&tm, "%H:%M:%S %d.%m.%Y");
+//        Purchase pur{ss.str(), 25, 78.25, 1956.25, "Sber", "1234567890"};
 
-        DataBaseHandler db;
-        db.create_table();
+//        DataBaseHandler db;
+//        db.insert_purchase(pur);
 
-
-        qDebug()<<"some text"<<endl;
 
 
 

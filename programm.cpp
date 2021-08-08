@@ -2,29 +2,32 @@
 
 namespace Programm
 {
-    static const std::string path {"/home/chaginsergey/Qt Projects/pages/"};
+    static const std::string path {"/home/chaginsergey/Downloads/"};
 
     const string loadDocument(const string& file_name)
     {
         ifstream ifile;
-        ifile.open(file_name);
+        ifile.open(path + file_name);
+
         if(!ifile)
-            qDebug()<<"Cannot open file: "<<file_name.c_str();
-        return "";
+        {
+            qDebug() <<"Cannot open file: "<<file_name.c_str()<<Qt::endl;
+            return "";
+        }
+
 
         string doc, line;
 
         while(getline(ifile, line))
             doc+=line;
 
-        qDebug() <<doc.c_str();
         return doc;
     }
 
     bool saveDocument(const std::string& filename, const std::string& data)
     {
         std::ofstream ofile(path + filename);
-        if (!ofile) { qDebug() << "Cannot open file"; return false; }
+        if (!ofile) { qDebug() << "Cannot open file"<<Qt::endl; return false; }
         ofile << data;
         ofile.close();
         return true;
@@ -38,7 +41,7 @@ namespace Programm
 
         if ((where.find(lstr) == std::string::npos) || (where.find(rstr) == std::string::npos))
         {
-            qDebug()<<"No data to parse\n";
+            qDebug()<<"No data to parse\n"<<Qt::endl;
             return "";
         }
 
