@@ -40,7 +40,7 @@ private:
     std::string account_;
 
     const Purchase getPurchaseInstance(double amount, const std::string& type) const;
-    bool updateBankAccountBalanceOnDB() const;
+    bool updateBankAccountBalanceOnDB(int sum) const;
 
 //public slots:
 

@@ -12,7 +12,7 @@ AccountHandler::AccountHandler(QObject *parent) : QObject(parent),
 bool AccountHandler::login()
 {
     //данные откуда берутся?
-    //вводить каждый раз или тянуть с бд?
+    //вводить каждый раз или тянуть с бд / настроек?
     return true;
 }
 
@@ -25,23 +25,14 @@ bool AccountHandler::buy(double amount)
 {
     //авторизауется? или уже авторизован
     //совершает покупку
-    //заносит данные в бд об операции
-    //покупает amount долларов на счете
-
-//    //мб добавить функцию, которая иниц-т Purchase и возвращает заполненный экземпляр
-//    //по сути всё повторяется
-//    Purchase purchase;
-//    purchase.date = getCurrentTimeStamp();
-//    purchase.type = __func__;
-//    purchase.amount = amount;
-//    purchase.price = parser_->getCurrentExcangeRate();
-//    purchase.sum = (amount * purchase.price);
-//    purchase.bank_name = bank_name_;
-//    purchase.account = account_;
+    //заносит данные в бд об операции +
+    //корректирует таблицу balance
 
     //TODO вывод не в консоль а в qml окно с ссобщением
     if(db_handler_->insertBuySellOperation(getPurchaseInstance(amount, "buy")))
     {
+        updateBankAccountBalanceOnDB(amount);
+
         qDebug() << "Bought "<<amount<<" dollars";
         return true;
     }
@@ -54,18 +45,17 @@ bool AccountHandler::buy(double amount)
 
 bool AccountHandler::sell(double amount)
 {
-//    Purchase purchase;
-//    purchase.date = getCurrentTimeStamp();
-//    purchase.type = __func__;
-//    purchase.amount = amount;
-//    purchase.price = parser_->getCurrentExcangeRate();
-//    purchase.sum = (amount * purchase.price);
-//    purchase.bank_name = bank_name_;
-//    purchase.account = account_;
+
+    //авторизауется? или уже авторизован
+    //совершает продажу
+    //заносит данные в бд об операции +
+    //корректирует таблицу balance
 
     //TODO вывод не в консоль а в qml окно с ссобщением
     if(db_handler_->insertBuySellOperation(getPurchaseInstance(amount, "sell")))
     {
+        updateBankAccountBalanceOnDB(amount*=-1);
+
         qDebug() << "Sold "<<amount<<" dollars";
         return true;
     }
@@ -126,7 +116,7 @@ const Purchase AccountHandler::getPurchaseInstance(double amount,
 }
 
 //будет принимать аргументы
-bool AccountHandler::updateBankAccountBalanceOnDB() const
+bool AccountHandler::updateBankAccountBalanceOnDB(int sum) const
 {
-    return db_handler_->updateBankAccount();
+    return db_handler_->updateBankAccount(sum);
 }

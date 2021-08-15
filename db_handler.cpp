@@ -54,7 +54,7 @@ double DataBaseHandler::getAccountBalance() const
     sql::ResultSet *res;
 
     stmt = connection_->createStatement();
-    res = stmt->executeQuery("SELECT balance FROM balance WHERE id = (SELECT MAX(id) FROM balance);");
+    res = stmt->executeQuery("SELECT balance FROM account_balance WHERE id = (SELECT MAX(id) FROM account_balance);");
 
     res->next();
     double balance = res->getInt("balance");
@@ -65,9 +65,33 @@ double DataBaseHandler::getAccountBalance() const
     return balance;
 }
 
-bool DataBaseHandler::updateBankAccount() const
+bool DataBaseHandler::updateBankAccount(int sum) const
 {
+    sql::Statement *stmt;
+    sql::ResultSet *res;
 
+    stmt = connection_->createStatement();
+    res = stmt->executeQuery("SELECT MAX(id) FROM account_balance;");
+
+    res->next();
+    int id = res->getInt(1);
+
+    delete res;
+    delete stmt;
+
+    sql::PreparedStatement *pstmt;
+    pstmt = connection_->prepareStatement(
+    "UPDATE account_balance SET date=?, balance=(balance+?) WHERE id =?;");
+
+    pstmt->setString(1, Programm::getDateTime());
+    pstmt->setInt(2, sum);
+    pstmt->setInt(3, id);
+
+    pstmt->executeUpdate();
+    delete pstmt;
+
+    //TODO нужна проверка
+    return true;
 }
 
 

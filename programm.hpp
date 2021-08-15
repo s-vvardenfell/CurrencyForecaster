@@ -5,6 +5,8 @@
 
 #include <string>
 #include <fstream>
+#include <iomanip>
+
 #include <QDebug>
 
 using namespace std;
@@ -29,5 +31,6 @@ namespace Programm
     const std::string parseDataFromPage(const std::string& where, const std::string& lstr, const std::string& rstr, bool with_left);
     void normalizeString(std::string& where, const std::string& what);
     std::string normalizeString(std::string where);
+    const std::string getDateTime();
 
 }

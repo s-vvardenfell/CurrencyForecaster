@@ -29,7 +29,8 @@
 //обрезать хранение в таблице до 2-3 знаков после запятой
 
 
-//таблица account balance и ее обновление - в ф-ях sell и buy
+//вывод баланса в гуи?
+//вывод операций в гуи - отельная вкладка
 
 int main(int argc, char *argv[])
 {
@@ -53,7 +54,6 @@ int main(int argc, char *argv[])
 
         AccountHandler acc;
         engine.rootContext()->setContextProperty("Account", &acc);
-
 
 
         engine.load(url);

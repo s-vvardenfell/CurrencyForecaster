@@ -56,7 +56,7 @@ public://проверить остальные методы на const
     void insertCurrencyExchangeRateToDB();
 
     double getAccountBalance() const;
-    bool updateBankAccount() const;
+    bool updateBankAccount(int amount) const;
 
 };
 
