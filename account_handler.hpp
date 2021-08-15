@@ -28,8 +28,6 @@ public:
     Q_INVOKABLE double getBankAccountBalanceFromDB(); //баланс в бд
     Q_INVOKABLE double getBankAccountBalanceFromSite(); //баланс в лк на сайте
 
-    const std::string getCurrentTimeStamp() const;
-
 
 private:
     std::unique_ptr<CurlHandler> curl_handler_;

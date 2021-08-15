@@ -2,6 +2,7 @@
 #define DB_HANDLER_H
 
 #include <QDebug>
+
 #include "mysql_connection.h"
 
 #include <cppconn/driver.h>
@@ -32,6 +33,7 @@ typedef struct Purchase
 
 class DataBaseHandler
 {
+
 private:
     sql::Driver *driver_;
     sql::Connection *connection_;
@@ -57,6 +59,8 @@ public://проверить остальные методы на const
 
     double getAccountBalance() const;
     bool updateBankAccount(int amount) const;
+
+
 
 };
 

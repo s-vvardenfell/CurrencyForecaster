@@ -37,8 +37,14 @@ Window {
         ColumnLayout
         {
 
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+//            Layout.fillWidth: true
+//            Layout.fillHeight: true
+
+            Layout.maximumWidth: parent.width * 0.5
+            Layout.maximumHeight: parent.height * 0.3
+
+            Layout.minimumWidth: parent.width * 0.5
+            Layout.minimumHeight: parent.height * 0.3
 
             Layout.alignment: Qt.AlignTop
 
@@ -59,6 +65,8 @@ Window {
                     {
                         Account.buy(spinboxBuy.value);
                         spinboxBuy.value = 0.0
+                        accBalLbl.text = Account.getBankAccountBalanceFromSite();
+                        dbBalLbl.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
@@ -72,6 +80,9 @@ Window {
 
             RowLayout
             {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
                 Button
                 {
                     id: buySell
@@ -82,6 +93,8 @@ Window {
                     {
                         Account.sell(spinboxSell.value);
                         spinboxSell.value = 0.0
+                        accBalLbl.text = Account.getBankAccountBalanceFromSite();
+                        dbBalLbl.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
@@ -103,6 +116,8 @@ Window {
                     Account.sellAll();
                     spinboxBuy.value = 0.0
                     spinboxSell.value = 0.0
+                    accBalLbl.text = Account.getBankAccountBalanceFromSite();
+                    dbBalLbl.text = Account.getBankAccountBalanceFromDB();
                 }
             }
 
@@ -123,14 +138,8 @@ Window {
                 spacing: 2
 
                 Layout.fillWidth: true
-                Layout.fillHeight: true
+//                Layout.fillHeight: true
                 Layout.alignment: Qt.AlignTop
-
-//https://github.com/s-vvardenfell/Diary-Calendar/blob/master/WorkPage.qml
-//                verticalLayoutDirection: ListView.BottomToTop
-//                spacing: 12
-//                ScrollBar.vertical: ScrollBar {}
-//                model: m_model
 
                 Label
                 {
@@ -167,6 +176,24 @@ Window {
                         border.width: 2
                     }
                 }
+
+                Label
+                {
+                    text: "some purchase4"
+                    Layout.fillWidth: true
+                    background: Rectangle
+                    {
+                        border.color:  "#2b5278"
+                        radius: 2
+                        border.width: 2
+                    }
+                }
+
+                Item
+                {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
             }
 
         }
@@ -175,6 +202,50 @@ Window {
         {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            RowLayout
+            {
+//                Layout.fillWidth: true
+//                Layout.fillHeight: true
+                Layout.maximumWidth: parent.width
+                Layout.maximumHeight : parent.height * 0.2
+
+                Label
+                {
+                    id: accBalLbl
+                    text: "Account balance: \n" + Account.getBankAccountBalanceFromSite();
+                    font.bold: true;
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    background: Rectangle
+                    {
+                        border.color:  "#2b5278"
+                        radius: 2
+                        border.width: 2
+                    }
+                }
+
+                Label
+                {
+                    id: dbBalLbl
+                    text: "Database balance: \n"+ Account.getBankAccountBalanceFromDB();
+                    font.bold: true;
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    background: Rectangle
+                    {
+                        border.color:  "#2b5278"
+                        radius: 2
+                        border.width: 2
+                    }
+                }
+            }
+
+
 
             Label
             {
@@ -190,19 +261,70 @@ Window {
                 }
             }
 
-            Label
+            RowLayout
             {
-                text: "Forecasts";
-                font.bold: true;
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                background: Rectangle
+
+                id: rowParsedData
+//                Layout.maximumWidth: parent.width
+                Layout.maximumHeight : parent.height * 0.4 //работает
+
+                Frame
                 {
-                    border.color:  "#2b5278"
-                    radius: 2
-                    border.width: 2
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    background: Rectangle
+                    {
+                        border.color:  "#2b5278"
+                        radius: 2
+                        border.width: 2
+                    }
+
+                    Column
+                    {
+                        Label
+                        {
+                            text: "Rambler";
+                        }
+
+                        Label
+                        {
+                            text: "data";
+                        }
+                    }
+
+                }
+
+                Frame
+                {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    background: Rectangle
+                    {
+                        border.color:  "#2b5278"
+                        radius: 2
+                        border.width: 2
+                    }
+
+                    Column
+                    {
+                        Label
+                        {
+                            text: "RBK";
+                        }
+
+                        Label
+                        {
+                            text: Account.
+                        }
+                    }
                 }
             }
+
+
 
         }
 

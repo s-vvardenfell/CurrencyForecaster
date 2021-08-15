@@ -92,19 +92,11 @@ double AccountHandler::getBankAccountBalanceFromSite()
     return 30.55;
 }
 
-const string AccountHandler::getCurrentTimeStamp() const
-{
-    std::time_t t = std::time(nullptr);
-    std::tm tm = *std::localtime(&t);
-    stringstream ss; ss<< put_time(&tm, "%H:%M:%S %d.%m.%Y");
-    return ss.str();
-}
-
 const Purchase AccountHandler::getPurchaseInstance(double amount,
                                                    const std::string& type) const
 {
     Purchase purchase;
-    purchase.date = getCurrentTimeStamp();
+    purchase.date = Programm::getDateTime();
     purchase.type = type;
     purchase.amount = amount;
     purchase.price = parser_->getCurrentExcangeRate();

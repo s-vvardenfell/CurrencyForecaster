@@ -90,9 +90,7 @@ namespace Programm
     {
         std::time_t t = std::time(nullptr);
         std::tm tm = *std::localtime(&t);
-
         std::stringstream ss; ss<< put_time(&tm, "%d.%m.%Y %T");
-
         return ss.str();
     }
 

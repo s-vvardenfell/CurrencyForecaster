@@ -4,6 +4,7 @@
 
 DataBaseHandler::DataBaseHandler(): driver_(nullptr),
     connection_(nullptr), parser_handler_(nullptr)
+
 {
     readSettings();
     connectToDB();
@@ -126,12 +127,6 @@ bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)
     //TODO нужна проверка
     return true;
 }
-
-
-
-
-
-
 
 
 
