@@ -27,6 +27,7 @@ public:
     //отдельная ф-я сверяет баланс и корректирует если есть разница
     Q_INVOKABLE double getBankAccountBalanceFromDB(); //баланс в бд
     Q_INVOKABLE double getBankAccountBalanceFromSite(); //баланс в лк на сайте
+    Q_INVOKABLE double getExcangeRate();
 
     std::vector<Purchase> getActiveLots() const;
 

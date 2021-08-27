@@ -113,9 +113,11 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
         purchase.date = res->getString(1);
         purchase.type = res->getString(2);
         purchase.amount = res->getDouble(3);
-        purchase.sum = res->getDouble(4);
-        purchase.bank_name = res->getString(5);
-        purchase.account = res->getString(6);
+        purchase.price = res->getDouble(4);
+        purchase.sum = res->getDouble(5);
+        purchase.bank_name = res->getString(6);
+        purchase.account = res->getString(7);
+
 
         purchases.push_back(purchase);
     }

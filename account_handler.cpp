@@ -92,6 +92,11 @@ double AccountHandler::getBankAccountBalanceFromSite()
     return 30.55;
 }
 
+double AccountHandler::getExcangeRate()
+{
+    return parser_->getCurrentExcangeRate();
+}
+
 std::vector<Purchase> AccountHandler::getActiveLots() const
 {
     return db_handler_->getActualPurchases();

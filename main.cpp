@@ -16,6 +16,8 @@
 //добавить исключения
 //добавить в rambler и рбк проверку вдруг появится новый источник/обновятся данные
 
+//нельзя продать если баланс 0!
+
 //CurlHandler стоит прокси не на локалхост
 //хранение копеек/центов в дробной части мб плохой идеей, мб нужна структура доллар
 //curl handler мб стоит таки переделать метод query на post и get
@@ -30,6 +32,8 @@
 //getActualPurchases добавить условие не проданные лоты, т.е. сначала добавить колонку в таблицу
 
 //сделать правильную структуру: Account не должен создавать CurlHandler и Parser
+
+//ф-ии buyAll в Account и reloadData в QML
 
 int main(int argc, char *argv[])
 {
@@ -50,23 +54,19 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-//        AccountHandler acc;
-//        engine.rootContext()->setContextProperty("Account", &acc);
+        AccountHandler acc;
+        engine.rootContext()->setContextProperty("Account", &acc);
 
-//        PurchaseModel pmodel;
-////        pmodel.addPurchase(PurchaseObject("Polar bear", "Large"));
-////        pmodel.addPurchase(PurchaseObject(Purchase{"1123", "Medi3um", 425.45, 312.2, 221.3,  "bank2", "acc"}));
+        PurchaseModel pmodel;
 
-//        std::vector<Purchase> lots{ acc.getActiveLots() };
+        std::vector<Purchase> lots{ acc.getActiveLots() };
 
-//        for(const auto& lot : lots)
-//        {
-//            pmodel.addPurchase(PurchaseObject(lot));
-////            qDebug()<< lot.date.c_str() <<" "<<lot.type.c_str()<< " "<<lot.amount<<" "<<lot.price
-////                   <<lot.sum<<" "<<lot.bank_name.c_str()<<" "<<lot.account.c_str();
-//        }
+        for(const auto& lot : lots)
+        {
+            pmodel.addPurchase(PurchaseObject(lot));
+        }
 
-//        engine.rootContext()->setContextProperty("pmodel", &pmodel);
+        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
         engine.load(url);
         return app.exec();

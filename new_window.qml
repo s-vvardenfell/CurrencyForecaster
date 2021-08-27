@@ -34,15 +34,23 @@ Window
 
                     Text {
                         anchors.centerIn: parent
-                        text: "SELL"
+                        text: "BUY"
+                    }
+
+                    onPressed:
+                    {
+                        Account.buy(spinboxBuy.value);
+                        spinboxBuy.value = 0.0
+                        realblncTxt.text = Account.getBankAccountBalanceFromSite();
+                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
                 SpinBox
                 {
+                    id: spinboxBuy
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-
 
                     Text {
                         anchors.centerIn: parent
@@ -62,15 +70,24 @@ Window
 
                     Text {
                         anchors.centerIn: parent
-                        text: "BUY"
+                        text: "SELL"
+                    }
+
+                    onPressed:
+                    {
+                        Account.sell(spinboxSell.value);
+                        spinboxSell.value = 0.0
+                        realblncTxt.text = Account.getBankAccountBalanceFromSite();
+                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
                 SpinBox
                 {
-
+                    id: spinboxSell
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+
 
                     Text {
                         anchors.centerIn: parent
@@ -92,6 +109,15 @@ Window
                         anchors.centerIn: parent
                         text: "SELL ALL"
                     }
+
+                    onPressed:
+                    {
+                        Account.sellAll();
+                        spinboxBuy.value = 0.0
+                        spinboxSell.value = 0.0
+                        realblncTxt.text = Account.getBankAccountBalanceFromSite();
+                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
+                    }
                 }
 
                 Button
@@ -105,32 +131,95 @@ Window
                     }
                 }
 
+                Button
+                {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "Reload data"
+                    }
+                }
+
             }
 
-//GroupBox !!!!!!!!!!!!!!!!!!!!11
-            Item { //чтобы itemDelegate не показывался поверх кнопок выше
-                Layout.minimumHeight: rlayout.height / 30
+            Item {
+                Layout.minimumHeight: rlayout.height / 25
+                Layout.alignment: Qt.AlignLeft
+
+                Text { //выровнять
+
+                    text: "Дата | Тип | Количество | Цена | Сумма | Банк | Счет"
+                }
+            }
+
+            Item {
+                Layout.minimumHeight: rlayout.height / 40
             }
 
 
             ListView
             {
-                model: 100
-
-                Component {
-                    id: itemDelegate
-                    Text { text: "I am item number: " + index }
-                }
+                id: lv
+                model : pmodel
+                spacing: 10
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                footer:Label{
-                    anchors.centerIn: parent
-                    text: "End"
+//                ScrollBar.vertical: ScrollBar {}
+
+                delegate: Item
+                {
+                    id: delegate
+                    Layout.fillWidth: true
+                    height: rlayout.height / 20
+
+                    required property string date
+                    required property string ptype
+                    required property double amount
+                    required property double price
+                    required property double sum
+                    required property string bank_name
+                    required property string account
+
+
+
+//                    Text
+//                    {
+////                            width: lv.width
+////                        anchors.fill: parent
+////                        anchors.centerIn: parent
+//                        font.pixelSize: 20
+
+//                        id: name
+//                        text: qsTr(date + ", " + ptype + ", " + parseInt(amount) +
+//                                   ", " + parseFloat(price) + ", " + parseFloat(sum))
+
+
+//                    }
+
+                    Button
+                    {
+                        Layout.alignment: Qt.AlignRight
+                    }
+
+                    Rectangle
+                    {
+                        Layout.alignment: Qt.AlignCenter
+
+                        border.color:  "black"
+                        radius: 2
+                        border.width: 10
+                        color: "red"
+                    }
+
                 }
 
-                delegate: itemDelegate
+
+
+
 
             }
 
@@ -150,24 +239,52 @@ Window
             {
                 Layout.maximumHeight: clmn2.height / 4
 
-                Label
+                ColumnLayout
                 {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                    Label
+                    {
 
-                    Text
-                    {//надпись вылезает если уменьшить размер сильно - перенос текста сделать
-                        anchors.centerIn: parent
-                        text: "Balance real and virtual"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        Text
+                        {//надпись вылезает если уменьшить размер сильно - перенос текста сделать
+                            id: realblncTxt
+                            anchors.centerIn: parent
+                            text: Account.getBankAccountBalanceFromSite()
+                        }
+
+                        background: Rectangle
+                        {
+                            border.color:  "#2b5278"
+                            radius: 2
+                            border.width: 2
+                        }
                     }
 
-//                    background: Rectangle
-//                    {
-//                        border.color:  "#2b5278"
-//                        radius: 2
-//                        border.width: 2
-//                    }
+
+                    Label
+                    {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        Text
+                        {//надпись вылезает если уменьшить размер сильно - перенос текста сделать
+                            id: virtblncTxt
+                            anchors.centerIn: parent
+                            text: Account.getBankAccountBalanceFromDB()
+                        }
+
+                        background: Rectangle
+                        {
+                            border.color:  "#2b5278"
+                            radius: 2
+                            border.width: 2
+                        }
+                    }
                 }
+
+
 
                 Label
                 {
@@ -177,7 +294,7 @@ Window
                     Text
                     {
                         anchors.centerIn: parent
-                        text: "Actual currency"
+                        text: parseFloat(Account.getExcangeRate())
                     }
                 }
 
