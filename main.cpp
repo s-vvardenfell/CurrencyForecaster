@@ -27,6 +27,9 @@
 //виджеты прогнозов и текущего курса
     //сделать через бд! + можно будет потом строить графики
 
+//getActualPurchases добавить условие не проданные лоты, т.е. сначала добавить колонку в таблицу
+
+//сделать правильную структуру: Account не должен создавать CurlHandler и Parser
 
 int main(int argc, char *argv[])
 {
@@ -51,22 +54,19 @@ int main(int argc, char *argv[])
 
 
         PurchaseModel pmodel;
-        pmodel.addPurchase(PurchaseObject("Wolf", "Medium"));
-        pmodel.addPurchase(PurchaseObject("Polar bear", "Large"));
-//        pmodel.addPurchase(PurchaseObject("Quoll", "Small"));
-//        pmodel.addPurchase(PurchaseObject("Quoll", "Small"));
+//        pmodel.addPurchase(PurchaseObject("Polar bear", "Large"));
+//        pmodel.addPurchase(PurchaseObject(Purchase{"1123", "Medi3um", 425.45, 312.2, 221.3,  "bank2", "acc"}));
 
-        pmodel.addPurchase(PurchaseObject(Purchase{"123", "Medi2um", 45.45, 32.2, 21.3, "bank1", "acc"}));
-        pmodel.addPurchase(PurchaseObject(Purchase{"1123", "Medi3um", 425.45, 312.2, 221.3,  "bank2", "acc"}));
+        std::vector<Purchase> lots{ acc.getActiveLots() };
 
-        //вызвать метод getPurchases AccountHandler который вернет список Purchase
-        //который ему отдаст db_handler
-        //которым в цикле иниц-тся PurchaseModel
+        for(const auto& lot : lots)
+        {
+            pmodel.addPurchase(PurchaseObject(lot));
+//            qDebug()<< lot.date.c_str() <<" "<<lot.type.c_str()<< " "<<lot.amount<<" "<<lot.price
+//                   <<lot.sum<<" "<<lot.bank_name.c_str()<<" "<<lot.account.c_str();
+        }
 
         engine.rootContext()->setContextProperty("pmodel", &pmodel);
-
-
-
 
         engine.load(url);
         return app.exec();

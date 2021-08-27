@@ -28,13 +28,14 @@ public:
     Q_INVOKABLE double getBankAccountBalanceFromDB(); //баланс в бд
     Q_INVOKABLE double getBankAccountBalanceFromSite(); //баланс в лк на сайте
 
+    std::vector<Purchase> getActiveLots() const;
 
 private:
     std::unique_ptr<CurlHandler> curl_handler_;
     std::unique_ptr<DataBaseHandler> db_handler_;
     std::unique_ptr<Parser> parser_;
 
-    std::string bank_name_;
+    std::string bank_name_; //сделать аргументами getPurchaseInstance
     std::string account_;
 
     const Purchase getPurchaseInstance(double amount, const std::string& type) const;

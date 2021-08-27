@@ -92,6 +92,11 @@ double AccountHandler::getBankAccountBalanceFromSite()
     return 30.55;
 }
 
+std::vector<Purchase> AccountHandler::getActiveLots() const
+{
+    return db_handler_->getActualPurchases();
+}
+
 const Purchase AccountHandler::getPurchaseInstance(double amount,
                                                    const std::string& type) const
 {

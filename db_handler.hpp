@@ -60,7 +60,7 @@ public://проверить остальные методы на const
     double getAccountBalance() const;
     bool updateBankAccount(int amount) const;
 
-
+    std::vector<Purchase> getActualPurchases() const;
 
 };
 

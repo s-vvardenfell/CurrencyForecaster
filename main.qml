@@ -136,7 +136,7 @@ Window {
                 anchors.top: lblLV.bottom
 //                Layout.alignment: Qt.AlignHCenter
                 width: parent.width/2;
-                height: parent.height/2
+                height: parent.height
 
 //                anchors.fill: parent
 
@@ -157,8 +157,7 @@ Window {
 
                     Text {
                         id: name
-                        text: qsTr("Purchase:"  + ", " + date + ", " + ptype
-                                            + ", " + parseFloat(amount) + ", " + parseFloat(price) + ", " + parseFloat(sum))
+                        text: qsTr(date + ", " + ptype + ", " + parseFloat(amount) + ", " + parseFloat(price) + ", " + parseFloat(sum))
                     }
 
                 }

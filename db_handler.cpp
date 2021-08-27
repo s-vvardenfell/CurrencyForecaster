@@ -4,7 +4,6 @@
 
 DataBaseHandler::DataBaseHandler(): driver_(nullptr),
     connection_(nullptr), parser_handler_(nullptr)
-
 {
     readSettings();
     connectToDB();
@@ -93,6 +92,39 @@ bool DataBaseHandler::updateBankAccount(int sum) const
 
     //TODO нужна проверка
     return true;
+}
+
+std::vector<Purchase> DataBaseHandler::getActualPurchases() const
+{
+    std::vector<Purchase> purchases;
+    sql::PreparedStatement *pstmt;
+    sql::ResultSet *res;
+
+    pstmt = connection_->prepareStatement(
+    "SELECT date, type, amount, price, sum, bank_name, account FROM my_purchases WHERE type = 'buy'");
+
+    res = pstmt->executeQuery();
+
+
+    while (res->next())
+    {
+        Purchase purchase;
+
+        purchase.date = res->getString(1);
+        purchase.type = res->getString(2);
+        purchase.amount = res->getDouble(3);
+        purchase.sum = res->getDouble(4);
+        purchase.bank_name = res->getString(5);
+        purchase.account = res->getString(6);
+
+        purchases.push_back(purchase);
+    }
+
+    delete res;
+    delete pstmt;
+
+    return purchases;
+
 }
 
 
