@@ -2,8 +2,15 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include <qqmlengine.h>
+#include <qqmlcontext.h>
+#include <qqml.h>
+#include <QtQuick/qquickitem.h>
+#include <QtQuick/qquickview.h>
+
 #include "db_handler.hpp"
 #include "account_handler.hpp"
+#include "purchase_object.hpp"
 
 //TODO
 //добавить исключения
@@ -28,7 +35,6 @@ int main(int argc, char *argv[])
 #endif
     try
     {
-
         QGuiApplication app(argc, argv);
 
         QQmlApplicationEngine engine;
@@ -40,9 +46,19 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-
         AccountHandler acc;
         engine.rootContext()->setContextProperty("Account", &acc);
+
+
+        PurchaseModel model;
+        model.addPurchase(PurchaseObject("Wolf", "Medium"));
+        model.addPurchase(PurchaseObject("Polar bear", "Large"));
+        model.addPurchase(PurchaseObject("Quoll", "Small"));
+        model.addPurchase(PurchaseObject("Quoll", "Small"));
+
+        engine.rootContext()->setContextProperty("mmodel", &model);
+
+
 
 
         engine.load(url);

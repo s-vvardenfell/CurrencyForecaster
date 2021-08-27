@@ -3,6 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.12
 
+
 /*
 окно покупки - кнопка, ввод кол-ва - мб отдельный список как в ежедневнике
     кнопка продажи - на конкретном лоте
@@ -23,11 +24,10 @@ Window {
     visible: true
     title: qsTr("Currency Manager")
 
-    Connections
-    {
-        target: Account
-//        onSendUNameToQmlForHeaderSignl: page3.title = text;
-    }
+//    Connections
+//    {
+//        target: Account
+//    }
 
     GridLayout
     {
@@ -131,68 +131,24 @@ Window {
 
             }
 
-//            ListView
-            ColumnLayout
+            ListView
             {
-                id: listView
-                spacing: 2
+                width: 100; height: 200
+                model : mmodel
 
-                Layout.fillWidth: true
-//                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignTop
+                spacing: 3
 
-                Label
+                delegate: Text
                 {
-                    text: "some purchase1"
-                    Layout.fillWidth: true
-                    background: Rectangle
-                    {
-                        border.color:  "#2b5278"
-                        radius: 2
-                        border.width: 2
-                    }
-                }
+                    required property string id
+                    required property string date
+                    required property string ptype
+                    required property string amount
+                    required property string price
+                    required property string sum
 
-                Label
-                {
-                    text: "some purchase2"
-                    Layout.fillWidth: true
-                    background: Rectangle
-                    {
-                        border.color:  "#2b5278"
-                        radius: 2
-                        border.width: 2
-                    }
-                }
-
-                Label
-                {
-                    text: "some purchase3"
-                    Layout.fillWidth: true
-                    background: Rectangle
-                    {
-                        border.color:  "#2b5278"
-                        radius: 2
-                        border.width: 2
-                    }
-                }
-
-                Label
-                {
-                    text: "some purchase4"
-                    Layout.fillWidth: true
-                    background: Rectangle
-                    {
-                        border.color:  "#2b5278"
-                        radius: 2
-                        border.width: 2
-                    }
-                }
-
-                Item
-                {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                    text: "Purchase: " + id + ", " + date + ", " + ptype
+                        + ", " + amount + ", " + price + ", " + sum
                 }
             }
 
@@ -318,7 +274,7 @@ Window {
 
                         Label
                         {
-                            text: Account.
+//                            text: Account..
                         }
                     }
                 }
