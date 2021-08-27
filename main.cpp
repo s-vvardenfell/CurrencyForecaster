@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
         QGuiApplication app(argc, argv);
 
         QQmlApplicationEngine engine;
-        const QUrl url(QStringLiteral("qrc:/main.qml"));
+        const QUrl url(QStringLiteral("qrc:/new_window.qml"));
+//        const QUrl url(QStringLiteral("qrc:/main.qml"));
         QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                          &app, [url](QObject *obj, const QUrl &objUrl) {
             if (!obj && url == objUrl)
@@ -49,24 +50,23 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-        AccountHandler acc;
-        engine.rootContext()->setContextProperty("Account", &acc);
+//        AccountHandler acc;
+//        engine.rootContext()->setContextProperty("Account", &acc);
 
+//        PurchaseModel pmodel;
+////        pmodel.addPurchase(PurchaseObject("Polar bear", "Large"));
+////        pmodel.addPurchase(PurchaseObject(Purchase{"1123", "Medi3um", 425.45, 312.2, 221.3,  "bank2", "acc"}));
 
-        PurchaseModel pmodel;
-//        pmodel.addPurchase(PurchaseObject("Polar bear", "Large"));
-//        pmodel.addPurchase(PurchaseObject(Purchase{"1123", "Medi3um", 425.45, 312.2, 221.3,  "bank2", "acc"}));
+//        std::vector<Purchase> lots{ acc.getActiveLots() };
 
-        std::vector<Purchase> lots{ acc.getActiveLots() };
+//        for(const auto& lot : lots)
+//        {
+//            pmodel.addPurchase(PurchaseObject(lot));
+////            qDebug()<< lot.date.c_str() <<" "<<lot.type.c_str()<< " "<<lot.amount<<" "<<lot.price
+////                   <<lot.sum<<" "<<lot.bank_name.c_str()<<" "<<lot.account.c_str();
+//        }
 
-        for(const auto& lot : lots)
-        {
-            pmodel.addPurchase(PurchaseObject(lot));
-//            qDebug()<< lot.date.c_str() <<" "<<lot.type.c_str()<< " "<<lot.amount<<" "<<lot.price
-//                   <<lot.sum<<" "<<lot.bank_name.c_str()<<" "<<lot.account.c_str();
-        }
-
-        engine.rootContext()->setContextProperty("pmodel", &pmodel);
+//        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
         engine.load(url);
         return app.exec();

@@ -10,8 +10,7 @@
 class PurchaseObject
 {
 public:
-    PurchaseObject(const QString &type, const QString &size);
-
+    PurchaseObject(const QString &type, const QString &size); //FOR TEST
     PurchaseObject(const Purchase &purchase);
 
     QString date() const;
@@ -23,7 +22,6 @@ public:
     QString account() const;
 
 private:
-
     QString date_;
     QString ptype_;
     double amount_;
@@ -31,7 +29,6 @@ private:
     double sum_;
     QString bank_name_;
     QString account_;
-
 };
 
 class PurchaseModel : public QAbstractListModel
@@ -49,7 +46,6 @@ public:
     };
 
     PurchaseModel(QObject *parent = 0);
-//![1]
 
     void addPurchase(const PurchaseObject &Purchase);
 
@@ -61,7 +57,7 @@ protected:
     QHash<int, QByteArray> roleNames() const;
 private:
     QList<PurchaseObject> m_Purchases;
-//![2]
+
 };
 
 #endif // PURCHASEOBJECT_H
