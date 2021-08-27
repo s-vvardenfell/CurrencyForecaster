@@ -133,22 +133,34 @@ Window {
 
             ListView
             {
-                width: 100; height: 200
-                model : mmodel
+                anchors.top: lblLV.bottom
+//                Layout.alignment: Qt.AlignHCenter
+                width: parent.width/2;
+                height: parent.height/2
 
+//                anchors.fill: parent
+
+                model : pmodel
                 spacing: 3
 
-                delegate: Text
+                delegate: Label
                 {
-                    required property string id
                     required property string date
                     required property string ptype
-                    required property string amount
-                    required property string price
-                    required property string sum
+                    required property double amount
+                    required property double price
+                    required property double sum
+                    required property string bank_name
+                    required property string account
 
-                    text: "Purchase: " + id + ", " + date + ", " + ptype
-                        + ", " + amount + ", " + price + ", " + sum
+
+
+                    Text {
+                        id: name
+                        text: qsTr("Purchase:"  + ", " + date + ", " + ptype
+                                            + ", " + parseFloat(amount) + ", " + parseFloat(price) + ", " + parseFloat(sum))
+                    }
+
                 }
             }
 

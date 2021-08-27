@@ -50,13 +50,20 @@ int main(int argc, char *argv[])
         engine.rootContext()->setContextProperty("Account", &acc);
 
 
-        PurchaseModel model;
-        model.addPurchase(PurchaseObject("Wolf", "Medium"));
-        model.addPurchase(PurchaseObject("Polar bear", "Large"));
-        model.addPurchase(PurchaseObject("Quoll", "Small"));
-        model.addPurchase(PurchaseObject("Quoll", "Small"));
+        PurchaseModel pmodel;
+        pmodel.addPurchase(PurchaseObject("Wolf", "Medium"));
+        pmodel.addPurchase(PurchaseObject("Polar bear", "Large"));
+//        pmodel.addPurchase(PurchaseObject("Quoll", "Small"));
+//        pmodel.addPurchase(PurchaseObject("Quoll", "Small"));
 
-        engine.rootContext()->setContextProperty("mmodel", &model);
+        pmodel.addPurchase(PurchaseObject(Purchase{"123", "Medi2um", 45.45, 32.2, 21.3, "bank1", "acc"}));
+        pmodel.addPurchase(PurchaseObject(Purchase{"1123", "Medi3um", 425.45, 312.2, 221.3,  "bank2", "acc"}));
+
+        //вызвать метод getPurchases AccountHandler который вернет список Purchase
+        //который ему отдаст db_handler
+        //которым в цикле иниц-тся PurchaseModel
+
+        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
 
 
