@@ -3,7 +3,8 @@
 
 CurrencyExchangeDataObject::CurrencyExchangeDataObject(const CurrencyExchangeData &currencyExchangeData)
 {
-    this->currency_ = QString::fromStdString(currencyExchangeData.currency_);
+    this->currency_ = QString::fromStdString(
+                currencyExchangeData.currency_.substr(0, currencyExchangeData.currency_.size() - 6));
     this->change_ = QString::fromStdString(currencyExchangeData.change_);
     this->cost_ = QString::fromStdString(currencyExchangeData.cost_);
 }

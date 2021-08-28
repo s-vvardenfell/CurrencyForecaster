@@ -37,7 +37,7 @@
 
 //ф-ии buyAll в Account и reloadData в QML
 
-//все структуры перенести в отдельный файл
+//tableView для списка операций!!!
 
 int main(int argc, char *argv[])
 {
