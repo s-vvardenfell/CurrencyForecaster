@@ -8,9 +8,11 @@
 #include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickview.h>
 
+//убрать лишние
 #include "db_handler.hpp"
 #include "account_handler.hpp"
 #include "purchase_object.hpp"
+#include "curl_handler.hpp"
 
 //TODO
 //добавить исключения
@@ -54,19 +56,61 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-        AccountHandler acc;
-        engine.rootContext()->setContextProperty("Account", &acc);
+//        AccountHandler acc;
+//        engine.rootContext()->setContextProperty("Account", &acc);
 
-        PurchaseModel pmodel;
+//        PurchaseModel pmodel;
 
-        std::vector<Purchase> lots{ acc.getActiveLots() };
+//        std::vector<Purchase> lots{ acc.getActiveLots() };
 
-        for(const auto& lot : lots)
+//        for(const auto& lot : lots)
+//        {
+//            pmodel.addPurchase(PurchaseObject(lot));
+//        }
+
+//        engine.rootContext()->setContextProperty("pmodel", &pmodel);
+
+
+
+
+
+
+//        CurlHandler* curl_handler_ = new CurlHandler();
+//        string parse_url = "https://www.tinkoff.ru/invest/currencies/";
+//        curl_handler_->query(parse_url, methodType::GET);
+
+
+
+//        Programm::saveDocument("page.txt", curl_handler_->getResponse());
+
+//.Table__table_14Vfq > tbody:nth-child(1)
+
+        string page = Programm::loadDocument("page.txt");
+        string table_name = Programm::parseDataFromPage(page, "Table__table_", " Table__", true);
+
+        CDocument html;
+        html.parse(page);
+
+        CSelection select = html.find('.' + table_name);
+
+        if(!select.nodeNum())
         {
-            pmodel.addPurchase(PurchaseObject(lot));
+            qDebug()<<"No results";
+        }
+        else
+        {
+            qDebug()<<select.nodeNum();
         }
 
-        engine.rootContext()->setContextProperty("pmodel", &pmodel);
+//        qDebug()<<select.nodeAt(0).childNum();
+
+//        qDebug()<<select.nodeAt(0).childAt(1).childNum();
+
+//        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childNum();
+
+        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childAt(0).text().c_str();
+        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childAt(1).text().c_str();
+        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childAt(2).text().c_str();
 
         engine.load(url);
         return app.exec();

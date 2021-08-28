@@ -5,6 +5,12 @@ import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.12
 
+//TODO
+/*
+  Сделать дефолтный margin, spacing, radius
+  нужен не только баланс $ реальный и в бд но и баланс рублевый!
+    мб с отображением счета, т.е. нужен Label на всю ширину второго ColumnLayout
+  */
 Window
 {
     width: 840
@@ -144,18 +150,20 @@ Window
 
             }
 
+            //оба могут быть перекрыты Rectangle'ми снизу
+            //мб шапка не нужна
+//            Item {
+//                Layout.minimumHeight: rlayout.height / 25
+//                Layout.alignment: Qt.AlignLeft
+
+//                Text { //выровнять
+
+//                    text: "Дата | Тип | Количество | Цена | Сумма | Банк | Счет"
+//                }
+//            }
+
             Item {
-                Layout.minimumHeight: rlayout.height / 25
-                Layout.alignment: Qt.AlignLeft
-
-                Text { //выровнять
-
-                    text: "Дата | Тип | Количество | Цена | Сумма | Банк | Счет"
-                }
-            }
-
-            Item {
-                Layout.minimumHeight: rlayout.height / 40
+                Layout.minimumHeight: rlayout.height / 20
             }
 
 
@@ -163,18 +171,22 @@ Window
             {
                 id: lv
                 model : pmodel
-                spacing: 10
+                spacing: 6
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
 //                ScrollBar.vertical: ScrollBar {}
 
-                delegate: Item
+                delegate: Rectangle
                 {
-                    id: delegate
-                    Layout.fillWidth: true
-                    height: rlayout.height / 20
+                    height: lv.height / 5
+                    width: lv.width
+
+                    border.color:  "black"
+                    radius: 5
+                    border.width: 2
+//                    color: "red"
 
                     required property string date
                     required property string ptype
@@ -184,42 +196,18 @@ Window
                     required property string bank_name
                     required property string account
 
-
-
-//                    Text
+//                    Button
 //                    {
-////                            width: lv.width
-////                        anchors.fill: parent
-////                        anchors.centerIn: parent
-//                        font.pixelSize: 20
-
-//                        id: name
-//                        text: qsTr(date + ", " + ptype + ", " + parseInt(amount) +
-//                                   ", " + parseFloat(price) + ", " + parseFloat(sum))
-
-
+//                        anchors.centerIn: parent
 //                    }
 
-                    Button
+                    Text
                     {
-                        Layout.alignment: Qt.AlignRight
-                    }
-
-                    Rectangle
-                    {
-                        Layout.alignment: Qt.AlignCenter
-
-                        border.color:  "black"
-                        radius: 2
-                        border.width: 10
-                        color: "red"
+                        anchors.fill: parent
+                        text: qsTr(date + ", " + ptype + ", " + parseInt(amount) + ", " + parseFloat(sum))
                     }
 
                 }
-
-
-
-
 
             }
 
@@ -282,6 +270,48 @@ Window
                             border.width: 2
                         }
                     }
+
+                    Label
+                    {
+
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        Text
+                        {//надпись вылезает если уменьшить размер сильно - перенос текста сделать
+                            id: realblncTxtRub
+                            anchors.centerIn: parent
+                            text: Account.getBankAccountBalanceFromSite()
+                        }
+
+                        background: Rectangle
+                        {
+                            border.color:  "#2b5278"
+                            radius: 2
+                            border.width: 2
+                        }
+                    }
+
+
+                    Label
+                    {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        Text
+                        {//надпись вылезает если уменьшить размер сильно - перенос текста сделать
+                            id: virtblncTxtRub
+                            anchors.centerIn: parent
+                            text: Account.getBankAccountBalanceFromDB()
+                        }
+
+                        background: Rectangle
+                        {
+                            border.color:  "#2b5278"
+                            radius: 2
+                            border.width: 2
+                        }
+                    }
                 }
 
 
@@ -330,7 +360,7 @@ Window
                 Text
                 {
                     anchors.centerIn: parent
-                    text: "Reserved place"
+                    text: "Reserved place - current margin calculation and so"
                 }
             }
 

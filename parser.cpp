@@ -115,35 +115,30 @@ double Parser::getCurrentExcangeRate()
     return price_;
 }
 
+//return val вектор строк или вообще структура для setContextProperty
 bool Parser::parseCurrencyExchangeRate()
 {
-//    curl_handler_->setHeader("Host", "www.gazprombank.ru");
+    curl_handler_->setHeader("Host", "www.tinkoff.ru");
+    curl_handler_->setHeader("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0");
+    const std::string url{"https://www.tinkoff.ru/invest/currencies/"};
 
-//    const std::string url{"https://www.gazprombank.ru/personal/courses/"};
+    curl_handler_->query(url, methodType::GET);
 
-//    curl_handler_->query(url, methodType::GET);
+    string table_name = Programm::parseDataFromPage(curl_handler_->getResponse(),
+                                                    "Table__table_", " Table__", true);
 
-//    string doc = Programm::loadDocument("gpb_page.txt");
+    CDocument html;
+    html.parse(curl_handler_->getResponse());
 
-//    CDocument html;
-//    html.parse(doc);
+    CSelection select = html.find('.' + table_name);
 
-//    CSelection select = html.find("nr-courses-table");
-
-//    qDebug()<<select.nodeNum();
-
-
-
-
+    if(!select.nodeNum())
+    {
+        qDebug()<<"No results in parseCurrencyExchangeRate()";
+        return false;
+    }
 
 
-    ///html/body/div[1]/div[1]/div[1]/div/div[3]/div[2]/div[3]/div[1]/div[2]/div[4]/span[2]
-    //div.nr-courses-table__line:nth-child(2) > div:nth-child(4) > span:nth-child(2)
-//
-//    71.46
-//    74.92
-
-//    Programm::saveDocument("gpb_page.txt", curl_handler_->getResponse());
 
 
 

@@ -21,6 +21,8 @@
 
 using json = nlohmann::json;
 
+//вынести в отельный файл?
+
 typedef struct ForecastData
 {
     std::string Parser_;
@@ -32,6 +34,14 @@ typedef struct ForecastData
 
 }ForecastData;
 
+typedef struct CurrencyExchangeData
+{
+    std::string currency_;
+    std::string change_;
+    std::string cost_;
+
+}CurrencyExchangeData;
+
 class Parser
 {
 
@@ -42,7 +52,7 @@ public:
     std::vector<ForecastData> getForecastsFromRmbr();
     double getCurrentExcangeRate();
 
-private:
+//private:
     std::unique_ptr<CurlHandler> curl_handler_;
 
     std::vector<ForecastData> rmbr_data_;
@@ -58,6 +68,7 @@ private:
     bool parseForecastRBK();
     bool parseForecastRmbr();
     bool parseCurrencyExchangeRate(); //TODO
+
 
 
 
