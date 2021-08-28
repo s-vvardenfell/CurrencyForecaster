@@ -116,8 +116,10 @@ double Parser::getCurrentExcangeRate()
 }
 
 //return val вектор строк или вообще структура для setContextProperty
-bool Parser::parseCurrencyExchangeRate()
+std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
 {
+    vector<CurrencyExchangeData> data{};
+
     curl_handler_->setHeader("Host", "www.tinkoff.ru");
     curl_handler_->setHeader("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0");
     const std::string url{"https://www.tinkoff.ru/invest/currencies/"};
@@ -126,8 +128,7 @@ bool Parser::parseCurrencyExchangeRate()
 
     string table_name = Programm::parseDataFromPage(curl_handler_->getResponse(),
                                                     "Table__table_", " Table__", true);
-
-    CDocument html;
+    CDocument html{};
     html.parse(curl_handler_->getResponse());
 
     CSelection select = html.find('.' + table_name);
@@ -135,14 +136,26 @@ bool Parser::parseCurrencyExchangeRate()
     if(!select.nodeNum())
     {
         qDebug()<<"No results in parseCurrencyExchangeRate()";
-        return false;
+        return data;
+    }
+
+    int num = select.nodeAt(0).childAt(1).childNum();
+
+    data.reserve(num);
+
+    for(int i = 0; i< num; ++ i)
+    {
+        CurrencyExchangeData temp;
+
+        temp.currency_ = select.nodeAt(0).childAt(1).childAt(i).childAt(0).text().c_str();
+        temp.change_ = select.nodeAt(0).childAt(1).childAt(i).childAt(1).text().c_str();
+        temp.cost_ = select.nodeAt(0).childAt(1).childAt(i).childAt(2).text().c_str();
+
+        data.push_back(temp);
     }
 
 
-
-
-
-    return true;
+    return data;
 }
 
 

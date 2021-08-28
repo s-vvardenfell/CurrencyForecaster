@@ -65,9 +65,11 @@ public:
     //возвращаемые значения и хранение данных продумать
     //мб стоит инсертить данные прогноза в бд на текущий день
     //а в нужном месте забирать
+    //убрать rmbr_data_ и подобное, сделать возвращаемые значения
     bool parseForecastRBK();
     bool parseForecastRmbr();
-    bool parseCurrencyExchangeRate(); //TODO
+
+    std::vector<CurrencyExchangeData> parseCurrencyExchangeRate() const;
 
 
 

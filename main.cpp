@@ -102,15 +102,19 @@ int main(int argc, char *argv[])
             qDebug()<<select.nodeNum();
         }
 
-//        qDebug()<<select.nodeAt(0).childNum();
+        qDebug()<<select.nodeAt(0).childNum();
 
-//        qDebug()<<select.nodeAt(0).childAt(1).childNum();
+        qDebug()<<select.nodeAt(0).childAt(1).childNum();
 
-//        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childNum();
+        int num = select.nodeAt(0).childAt(1).childNum();
 
-        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childAt(0).text().c_str();
-        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childAt(1).text().c_str();
-        qDebug()<<select.nodeAt(0).childAt(1).childAt(0).childAt(2).text().c_str();
+        for(int i = 0; i< num; ++ i)
+        {
+//            qDebug()<<select.nodeAt(0).childAt(1).childAt(i).text().c_str();
+            qDebug()<<select.nodeAt(0).childAt(1).childAt(i).childAt(1).text().c_str();
+        }
+
+
 
         engine.load(url);
         return app.exec();
