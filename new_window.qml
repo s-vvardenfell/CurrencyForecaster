@@ -350,23 +350,66 @@ Window
             }
 
 
-            Rectangle
+//            Rectangle
+//            {
+//                color: 'lightgrey'
+//                Layout.fillWidth: true
+//                Layout.fillHeight: true
+
+
+//                Text
+//                {
+//                    anchors.centerIn: parent
+//                    text: "Reserved place - current margin calculation and so"
+//                }
+//            }
+
+            ListView
             {
-                color: 'lightgrey'
+                id: lv2
+                model : cmodel
+                spacing: 6
+
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
+//                ScrollBar.vertical: ScrollBar {}
 
-                Text
+                delegate: Rectangle
                 {
-                    anchors.centerIn: parent
-                    text: "Reserved place - current margin calculation and so"
+                    height: lv2.height / 5
+                    width: lv2.width
+
+                    border.color:  "black"
+                    radius: 5
+                    border.width: 2
+//                    color: "red"
+
+                    required property string currency
+                    required property string change
+                    required property string cost
+
+//                    Button
+//                    {
+//                        anchors.centerIn: parent
+//                    }
+
+                    Text
+                    {
+                        anchors.fill: parent
+                        text: qsTr(currency + ", " + change + ", " + cost)
+                    }
+
                 }
+
             }
+
+
+        }
 
 
         }
 
     }
 
-}
+

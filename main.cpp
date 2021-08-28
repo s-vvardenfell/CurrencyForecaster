@@ -8,11 +8,11 @@
 #include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickview.h>
 
-//убрать лишние
-#include "db_handler.hpp"
+
 #include "account_handler.hpp"
 #include "purchase_object.hpp"
-#include "curl_handler.hpp"
+#include "currency_exchange_data_object.hpp"
+
 
 //TODO
 //добавить исключения
@@ -37,6 +37,8 @@
 
 //ф-ии buyAll в Account и reloadData в QML
 
+//все структуры перенести в отдельный файл
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -56,64 +58,29 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-//        AccountHandler acc;
-//        engine.rootContext()->setContextProperty("Account", &acc);
+        AccountHandler acc;
+        engine.rootContext()->setContextProperty("Account", &acc);
 
-//        PurchaseModel pmodel;
+        PurchaseModel pmodel;
+        std::vector<Purchase> lots{ acc.getActiveLots() };
 
-//        std::vector<Purchase> lots{ acc.getActiveLots() };
-
-//        for(const auto& lot : lots)
-//        {
-//            pmodel.addPurchase(PurchaseObject(lot));
-//        }
-
-//        engine.rootContext()->setContextProperty("pmodel", &pmodel);
-
-
-
-
-
-
-//        CurlHandler* curl_handler_ = new CurlHandler();
-//        string parse_url = "https://www.tinkoff.ru/invest/currencies/";
-//        curl_handler_->query(parse_url, methodType::GET);
-
-
-
-//        Programm::saveDocument("page.txt", curl_handler_->getResponse());
-
-//.Table__table_14Vfq > tbody:nth-child(1)
-
-        string page = Programm::loadDocument("page.txt");
-        string table_name = Programm::parseDataFromPage(page, "Table__table_", " Table__", true);
-
-        CDocument html;
-        html.parse(page);
-
-        CSelection select = html.find('.' + table_name);
-
-        if(!select.nodeNum())
+        for(const auto& lot : lots)
         {
-            qDebug()<<"No results";
-        }
-        else
-        {
-            qDebug()<<select.nodeNum();
+            pmodel.addPurchase(PurchaseObject(lot));
         }
 
-        qDebug()<<select.nodeAt(0).childNum();
+        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
-        qDebug()<<select.nodeAt(0).childAt(1).childNum();
 
-        int num = select.nodeAt(0).childAt(1).childNum();
+        CurrencyExchangeDataObjectModel cmodel;
+        std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
 
-        for(int i = 0; i< num; ++ i)
+        for(const auto& rate : currencies)
         {
-//            qDebug()<<select.nodeAt(0).childAt(1).childAt(i).text().c_str();
-            qDebug()<<select.nodeAt(0).childAt(1).childAt(i).childAt(1).text().c_str();
+            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
         }
 
+        engine.rootContext()->setContextProperty("cmodel", &cmodel);
 
 
         engine.load(url);

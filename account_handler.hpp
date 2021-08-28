@@ -27,8 +27,9 @@ public:
     //отдельная ф-я сверяет баланс и корректирует если есть разница
     Q_INVOKABLE double getBankAccountBalanceFromDB(); //баланс в бд
     Q_INVOKABLE double getBankAccountBalanceFromSite(); //баланс в лк на сайте
-    Q_INVOKABLE double getExcangeRate();
+    Q_INVOKABLE double getExcangeRate(); //нужна ли эта ф-я если парсим все валюты блоком?
 
+    std::vector<CurrencyExchangeData> getExcangeRates();
     std::vector<Purchase> getActiveLots() const;
 
 private:

@@ -101,7 +101,7 @@ QVariant PurchaseModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 
-//![0]
+
 QHash<int, QByteArray> PurchaseModel::roleNames() const
 {
     QHash<int, QByteArray> roles;

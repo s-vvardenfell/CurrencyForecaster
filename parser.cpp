@@ -115,7 +115,6 @@ double Parser::getCurrentExcangeRate()
     return price_;
 }
 
-//return val вектор строк или вообще структура для setContextProperty
 std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
 {
     vector<CurrencyExchangeData> data{};
@@ -153,7 +152,6 @@ std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
 
         data.push_back(temp);
     }
-
 
     return data;
 }

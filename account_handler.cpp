@@ -97,6 +97,11 @@ double AccountHandler::getExcangeRate()
     return parser_->getCurrentExcangeRate();
 }
 
+std::vector<CurrencyExchangeData> AccountHandler::getExcangeRates()
+{
+    return parser_->parseCurrencyExchangeRate();
+}
+
 std::vector<Purchase> AccountHandler::getActiveLots() const
 {
     return db_handler_->getActualPurchases();
