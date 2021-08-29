@@ -13,6 +13,8 @@
 #include "purchase_object.hpp"
 #include "currency_exchange_data_object.hpp"
 
+#include "tablemodel.hpp"
+
 
 //TODO
 //добавить исключения
@@ -49,7 +51,8 @@ int main(int argc, char *argv[])
         QGuiApplication app(argc, argv);
 
         QQmlApplicationEngine engine;
-        const QUrl url(QStringLiteral("qrc:/new_window.qml"));
+        const QUrl url(QStringLiteral("qrc:/TV_test.qml"));
+//        const QUrl url(QStringLiteral("qrc:/new_window.qml"));
 //        const QUrl url(QStringLiteral("qrc:/main.qml"));
         QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                          &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -58,29 +61,33 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-        AccountHandler acc;
-        engine.rootContext()->setContextProperty("Account", &acc);
+//        AccountHandler acc;
+//        engine.rootContext()->setContextProperty("Account", &acc);
 
-        PurchaseModel pmodel;
-        std::vector<Purchase> lots{ acc.getActiveLots() };
+//        PurchaseModel pmodel;
+//        std::vector<Purchase> lots{ acc.getActiveLots() };
 
-        for(const auto& lot : lots)
-        {
-            pmodel.addPurchase(PurchaseObject(lot));
-        }
+//        for(const auto& lot : lots)
+//        {
+//            pmodel.addPurchase(PurchaseObject(lot));
+//        }
 
-        engine.rootContext()->setContextProperty("pmodel", &pmodel);
+//        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
 
-        CurrencyExchangeDataObjectModel cmodel;
-        std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
+//        CurrencyExchangeDataObjectModel cmodel;
+//        std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
 
-        for(const auto& rate : currencies)
-        {
-            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
-        }
+//        for(const auto& rate : currencies)
+//        {
+//            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
+//        }
 
-        engine.rootContext()->setContextProperty("cmodel", &cmodel);
+//        engine.rootContext()->setContextProperty("cmodel", &cmodel);
+
+        //исп мб этот тип
+//        qmlRegisterType<SortFilterProxyModel>("CurrencyExchangeDataObjectModel", 1, 1, "CurrencyExchangeDataObjectModel");
+        qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 1, 1, "SortFilterProxyModel");
 
 
         engine.load(url);
