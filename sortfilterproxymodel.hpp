@@ -1,12 +1,12 @@
-#ifndef TABLEMODEL_HPP
-#define TABLEMODEL_HPP
+#ifndef SORTFILTERPROXYMODEL_HPP
+#define SORTFILTERPROXYMODEL_HPP
+
+#include <QtDebug>
+#include <QtQml>
 
 #include <QtCore/qsortfilterproxymodel.h>
 #include <QtQml/qqmlparserstatus.h>
 #include <QtQml/qjsvalue.h>
-#include <QtQml>
-
-
 
 class SortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus
 {
@@ -25,39 +25,7 @@ class SortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStat
 
     Q_ENUMS(FilterSyntax)
 
-    enum PurchaseRoles {
-        DateRole = Qt::UserRole + 1,
-        PtypeRole,
-        AmountRole,
-        PriceRole,
-        SumRole,
-        BankNameRole,
-        AccountRole
-    };
-
 public:
-
-    QVariant data(const QModelIndex &index, int role) const override
-    {
-        switch (role) {
-            case Qt::DisplayRole:
-                return QString("%1, %2").arg(index.column()).arg(index.row());
-            case Qt::DisplayRole +1:
-                return QString("%1, %2").arg("index.column()").arg("index.row()");
-            case Qt::DisplayRole +2:
-                return QString("%1, %2").arg("1234").arg("1234");
-            default:
-                break;
-        }
-
-        return QVariant();
-    }
-
-
-
-
-    //////////////////
-
     explicit SortFilterProxyModel(QObject *parent = 0);
 
     QObject *source() const;
@@ -103,4 +71,4 @@ private:
     QByteArray m_filterRole;
 };
 
-#endif // TABLEMODEL_HPP
+#endif // SORTFILTERPROXYMODEL_HPP

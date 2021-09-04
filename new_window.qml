@@ -1,9 +1,16 @@
-import QtQuick 2.0
-
+//import QtQuick 2.0
+import QtQuick.Controls 1.2
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.12
+
+import PurchaseTableModel 0.1
+import SortFilterProxyModel 0.1
+
+//import QtQuick.Window 2.15
+//import QtQuick.Layouts 1.1
+//import QtQuick.Controls 1.2
 
 //TODO
 /*
@@ -13,8 +20,8 @@ import QtQuick.Controls 2.12
   */
 Window
 {
-    width: 840
-    height: 480
+    width: 1024
+    height: 740
     visible: true
     title: qsTr("Currency Manager")
 
@@ -150,66 +157,124 @@ Window
 
             }
 
-            //оба могут быть перекрыты Rectangle'ми снизу
-            //мб шапка не нужна
-//            Item {
-//                Layout.minimumHeight: rlayout.height / 25
-//                Layout.alignment: Qt.AlignLeft
-
-//                Text { //выровнять
-
-//                    text: "Дата | Тип | Количество | Цена | Сумма | Банк | Счет"
-//                }
-//            }
-
-            Item {
+            Item {//мб не нужен уже
                 Layout.minimumHeight: rlayout.height / 20
             }
 
 
-            ListView
-            {
-                id: lv
-                model : pmodel
-                spacing: 6
+            ToolBar {
+
+                Layout.fillWidth: true
+
+                TextField {
+                    id: searchBox
+
+                    placeholderText: "Search..."
+                    inputMethodHints: Qt.ImhNoPredictiveText
+
+                    width: rlayout.width / 5
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            TableView {
+                id: tableView
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-//                ScrollBar.vertical: ScrollBar {}
+//                Layout.fillWidth: true
+//                Layout.maximumHeight: rlayout.height / 3
+////                frameVisible: false
+////                sortIndicatorVisible: true
 
-                delegate: Rectangle
-                {
-                    height: lv.height / 5
-                    width: lv.width
+//                Layout.minimumWidth: 400
+//                Layout.minimumHeight: 240
+//                Layout.preferredWidth: 600
+//                Layout.preferredHeight: 400
 
-                    border.color:  "black"
-                    radius: 5
-                    border.width: 2
-//                    color: "red"
+                TableViewColumn {
+                    id: dateColumn
+                    title: "Date"
+                    role: "date"
+                    movable: false
+                    resizable: false
+                    width: tableView.width / 2
+                }
 
-                    required property string date
-                    required property string ptype
-                    required property double amount
-                    required property double price
-                    required property double sum
-                    required property string bank_name
-                    required property string account
+                TableViewColumn {
+                    id: ptypeColumn
+                    title: "Type"
+                    role: "ptype"
+                    movable: false
+                    resizable: false
+                    width: tableView.width / 2
+                }
 
-//                    Button
-//                    {
-//                        anchors.centerIn: parent
-//                    }
+                model: SortFilterProxyModel {
+                    id: proxyModel
+    //                source: sourceModel.count > 0 ? sourceModel : null
+                    source: sourceModel.columnCount() > 0 ? sourceModel : null
+                    sortOrder: tableView.sortIndicatorOrder
+                    sortCaseSensitivity: Qt.CaseInsensitive
+                    sortRole: sourceModel.columnCount() > 0 ?
+                                  tableView.getColumn(tableView.sortIndicatorColumn).role : ""
 
-                    Text
-                    {
-                        anchors.fill: parent
-                        text: qsTr(date + ", " + ptype + ", " + parseInt(amount) + ", " + parseFloat(sum))
-                    }
+                    filterString: "*" + searchBox.text + "*"
+                    filterSyntax: SortFilterProxyModel.Wildcard
+                    filterCaseSensitivity: Qt.CaseInsensitive
+                }
 
+                PurchaseTableModel{
+                    id: sourceModel
                 }
 
             }
+
+//            ListView
+//            {
+//                id: lv
+//                model : pmodel
+//                spacing: 6
+
+//                Layout.fillWidth: true
+//                Layout.fillHeight: true
+
+////                ScrollBar.vertical: ScrollBar {}
+
+//                delegate: Rectangle
+//                {
+//                    height: lv.height / 5
+//                    width: lv.width
+
+//                    border.color:  "black"
+//                    radius: 5
+//                    border.width: 2
+////                    color: "red"
+
+//                    required property string date
+//                    required property string ptype
+//                    required property double amount
+//                    required property double price
+//                    required property double sum
+//                    required property string bank_name
+//                    required property string account
+
+////                    Button
+////                    {
+////                        anchors.centerIn: parent
+////                    }
+
+//                    Text
+//                    {
+//                        anchors.fill: parent
+//                        text: qsTr(date + ", " + ptype + ", " + parseInt(amount) + ", " + parseFloat(sum))
+//                    }
+
+//                }
+
+//            }
 
 
         }

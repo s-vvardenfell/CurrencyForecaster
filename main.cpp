@@ -13,8 +13,8 @@
 #include "purchase_object.hpp"
 #include "currency_exchange_data_object.hpp"
 
-#include "tablemodel.hpp"
-
+#include "sortfilterproxymodel.hpp"
+#include "purchase_tablemodel.hpp"
 
 //TODO
 //добавить исключения
@@ -39,7 +39,8 @@
 
 //ф-ии buyAll в Account и reloadData в QML
 
-//tableView для списка операций!!!
+//tableView для списка операций
+    //убрать старый listView
 
 int main(int argc, char *argv[])
 {
@@ -51,9 +52,8 @@ int main(int argc, char *argv[])
         QGuiApplication app(argc, argv);
 
         QQmlApplicationEngine engine;
-        const QUrl url(QStringLiteral("qrc:/TV_test.qml"));
 //        const QUrl url(QStringLiteral("qrc:/new_window.qml"));
-//        const QUrl url(QStringLiteral("qrc:/main.qml"));
+        const QUrl url(QStringLiteral("qrc:/tv_test2.qml"));
         QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                          &app, [url](QObject *obj, const QUrl &objUrl) {
             if (!obj && url == objUrl)
@@ -64,30 +64,30 @@ int main(int argc, char *argv[])
 //        AccountHandler acc;
 //        engine.rootContext()->setContextProperty("Account", &acc);
 
+
+//        //список операций
 //        PurchaseModel pmodel;
 //        std::vector<Purchase> lots{ acc.getActiveLots() };
-
 //        for(const auto& lot : lots)
 //        {
 //            pmodel.addPurchase(PurchaseObject(lot));
 //        }
-
 //        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
 
+//        //список курсов валют
 //        CurrencyExchangeDataObjectModel cmodel;
 //        std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
-
 //        for(const auto& rate : currencies)
 //        {
 //            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
 //        }
-
 //        engine.rootContext()->setContextProperty("cmodel", &cmodel);
 
-        //исп мб этот тип
-//        qmlRegisterType<SortFilterProxyModel>("CurrencyExchangeDataObjectModel", 1, 1, "CurrencyExchangeDataObjectModel");
-        qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 1, 1, "SortFilterProxyModel");
+
+        //исп мб этот тип для модели ListView тоже
+        qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 0, 1, "SortFilterProxyModel");
+        qmlRegisterType<PurchaseTableModel>("PurchaseTableModel", 0, 1, "PurchaseTableModel");
 
 
         engine.load(url);

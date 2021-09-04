@@ -1,6 +1,4 @@
-#include "tablemodel.hpp"
-
-//////////////////////////////////////////////////////////////////////
+#include "sortfilterproxymodel.hpp"
 
 SortFilterProxyModel::SortFilterProxyModel(QObject *parent) : QSortFilterProxyModel(parent), m_complete(false)
 {
