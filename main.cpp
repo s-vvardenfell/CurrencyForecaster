@@ -8,10 +8,10 @@
 #include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickview.h>
 
-
 #include "account_handler.hpp"
 #include "purchase_object.hpp"
 #include "currency_exchange_data_object.hpp"
+#include "purchase_tablemodel.hpp"
 
 #include "sortfilterproxymodel.hpp"
 #include "purchase_tablemodel.hpp"
@@ -26,21 +26,20 @@
 //хранение копеек/центов в дробной части мб плохой идеей, мб нужна структура доллар
 //curl handler мб стоит таки переделать метод query на post и get
 
-//возможно получение курса обмена придется перенести в account manager
-    //тк parser занимается только открытыми данными
-
-//виджет лотов сделать - все покупки тянуть как с бд?
 //виджеты прогнозов и текущего курса
     //сделать через бд! + можно будет потом строить графики
 
 //getActualPurchases добавить условие не проданные лоты, т.е. сначала добавить колонку в таблицу
 
-//сделать правильную структуру: Account не должен создавать CurlHandler и Parser
+//сделать правильную структуру: Account не должен создавать CurlHandler, но должен Parser мб
 
 //ф-ии buyAll в Account и reloadData в QML
 
 //tableView для списка операций
     //убрать старый listView
+
+//убрать в бд адреса и тд сайтов которые я парсирую, тянуть их из бд / настроек
+//сделать tv рабочий
 
 int main(int argc, char *argv[])
 {
@@ -61,7 +60,7 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
 
 
-//        AccountHandler acc;
+        AccountHandler acc;
 //        engine.rootContext()->setContextProperty("Account", &acc);
 
 
@@ -84,10 +83,19 @@ int main(int argc, char *argv[])
 //        }
 //        engine.rootContext()->setContextProperty("cmodel", &cmodel);
 
+        //список операций
+        PurchaseTableModel ptmodel;
+        std::vector<Purchase> lots{ acc.getActiveLots() };
+        for(const auto& lot : lots)
+        {
+            ptmodel.addPurchase(PurchaseObject(lot));
+        }
+        engine.rootContext()->setContextProperty("ptmodel", &ptmodel);
+
 
         //исп мб этот тип для модели ListView тоже
         qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 0, 1, "SortFilterProxyModel");
-        qmlRegisterType<PurchaseTableModel>("PurchaseTableModel", 0, 1, "PurchaseTableModel");
+//        qmlRegisterType<PurchaseTableModel>("PurchaseTableModel", 0, 1, "PurchaseTableModel");
 
 
         engine.load(url);

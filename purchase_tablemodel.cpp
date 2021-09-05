@@ -1,51 +1,41 @@
 #include "purchase_tablemodel.hpp"
 
-
 PurchaseTableModel::PurchaseTableModel(QObject *parent) : QAbstractTableModel(parent)
 {
 
 }
 
-int PurchaseTableModel::rowCount(const QModelIndex &) const
+int PurchaseTableModel::rowCount(const QModelIndex&) const
 {
-    return 10;//КАК ЭТО ОПРЕДЕЛЮ
+    return purchases_.size();
 }
 
-int PurchaseTableModel::columnCount(const QModelIndex &) const
+int PurchaseTableModel::columnCount(const QModelIndex&) const
 {
-    return 6;
+    return 7;
 }
 
 QVariant PurchaseTableModel::data(const QModelIndex &index, int role) const
 {
-//    switch (role) {
-//        case Qt::DisplayRole:
-//            return QString("%1, %2").arg(index.column()).arg(index.row());
-//        default:
-//            break;
-//    }
-//    return QVariant();
+    if (index.row() < 0 || index.row() >= purchases_.count())
+        return QVariant();
 
-//    if (index.row() < 0 || index.row() >= m_Purchases.count())
-//        return QVariant();
+    const PurchaseObject &purchase = purchases_[index.row()];
 
-//    const PurchaseObject &Purchase = m_Purchases[index.row()];
-
-        if (role == DateRole)
-            return "Purchase.date()";
-        else if (role == PtypeRole)
-            return "Purchase.ptype()";
-        else if (role == AmountRole)
-            return "Purchase.amount()";
-        else if (role == PriceRole)
-            return "Purchase.price()";
-        else if (role == SumRole)
-            return "Purchase.sum()";
-        else if (role == BankNameRole)
-            return "Purchase.bank_name()";
-        else if (role == AccountRole)
-            return "Purchase.account()";
-
+    if (role == DateRole)
+        return purchase.date();
+    else if (role == PtypeRole)
+        return purchase.ptype();
+    else if (role == AmountRole)
+        return purchase.amount();
+    else if (role == PriceRole)
+        return purchase.price();
+    else if (role == SumRole)
+        return purchase.sum();
+    else if (role == BankNameRole)
+        return purchase.bank_name();
+    else if (role == AccountRole)
+        return purchase.account();
 
     return QVariant();
 }
@@ -63,4 +53,12 @@ QHash<int, QByteArray> PurchaseTableModel::roleNames() const
     roles[AccountRole] = "account";
 
     return roles;
+}
+
+void PurchaseTableModel::addPurchase(const PurchaseObject &obj)
+{
+    //здесь каков порядок стобцы и строки передавать как
+    beginInsertRows(QModelIndex(), rowCount(), columnCount());
+    purchases_ << obj;
+    endInsertRows();
 }

@@ -3,12 +3,14 @@ import QtQuick.Window 2.15
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
 
-import PurchaseTableModel 0.1
+//import PurchaseTableModel 0.1
 import SortFilterProxyModel 0.1
 
 
     ApplicationWindow {
         id: window
+        width: 1024
+        height: 740
         visible: true
         title: "TV TEST"
 
@@ -46,7 +48,7 @@ import SortFilterProxyModel 0.1
                 role: "date"
                 movable: false
                 resizable: false
-                width: tableView.viewport.width / 5
+                width: tableView.viewport.width / 7
             }
 
             TableViewColumn {
@@ -55,7 +57,7 @@ import SortFilterProxyModel 0.1
                 role: "ptype"
                 movable: false
                 resizable: false
-                width: tableView.viewport.width / 5
+                width: tableView.viewport.width / 7
             }
 
             TableViewColumn {
@@ -64,7 +66,7 @@ import SortFilterProxyModel 0.1
                 role: "amount"
                 movable: false
                 resizable: false
-                width: tableView.viewport.width / 5
+                width: tableView.viewport.width / 7
             }
 
             TableViewColumn {
@@ -73,7 +75,7 @@ import SortFilterProxyModel 0.1
                 role: "price"
                 movable: false
                 resizable: false
-                width: tableView.viewport.width / 5
+                width: tableView.viewport.width / 7
             }
 
             TableViewColumn {
@@ -82,13 +84,31 @@ import SortFilterProxyModel 0.1
                 role: "sum"
                 movable: false
                 resizable: false
-                width: tableView.viewport.width / 5
+                width: tableView.viewport.width / 7
+            }
+
+            TableViewColumn {
+                id: accountColumn
+                title: "Account"
+                role: "account"
+                movable: false
+                resizable: false
+                width: tableView.viewport.width / 7
+            }
+
+            TableViewColumn {
+                id: bankColumn
+                title: "Bank"
+                role: "bank_name"
+                movable: false
+                resizable: false
+                width: tableView.viewport.width / 7
             }
 
             model: SortFilterProxyModel {
                 id: proxyModel
-//                source: sourceModel.count > 0 ? sourceModel : null
-                source: sourceModel.columnCount() > 0 ? sourceModel : null
+//                source: sourceModel.columnCount() > 0 ? sourceModel : null
+                source: ptmodel
                 sortOrder: tableView.sortIndicatorOrder
                 sortCaseSensitivity: Qt.CaseInsensitive
                 sortRole: sourceModel.columnCount() > 0 ?
@@ -99,9 +119,9 @@ import SortFilterProxyModel 0.1
                 filterCaseSensitivity: Qt.CaseInsensitive
             }
 
-            PurchaseTableModel{
-                id: sourceModel
-            }
+//            PurchaseTableModel{
+//                id: sourceModel
+//            }
         }
     }
 

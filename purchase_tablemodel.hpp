@@ -2,8 +2,9 @@
 #define PURCHASETABLEMODEL_HPP
 
 #include <qqml.h>
-
 #include <QAbstractTableModel>
+
+#include "purchase_object.hpp"
 
 class PurchaseTableModel : public QAbstractTableModel
 {
@@ -32,6 +33,11 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
 
     QHash<int, QByteArray> roleNames() const override;
+
+    void addPurchase(const PurchaseObject &obj);
+
+private:
+    QList<PurchaseObject> purchases_;
 };
 
 #endif // PURCHASETABLEMODEL_HPP
