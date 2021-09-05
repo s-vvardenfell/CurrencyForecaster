@@ -33,11 +33,10 @@ public:
     std::vector<Purchase> getActiveLots() const;
 
 private:
-    std::unique_ptr<CurlHandler> curl_handler_;
     std::unique_ptr<DataBaseHandler> db_handler_;
     std::unique_ptr<Parser> parser_;
 
-    std::string bank_name_; //сделать аргументами getPurchaseInstance
+    std::string bank_name_; //сделать аргументами по умолчанию getPurchaseInstance, убрать отсюда
     std::string account_;
 
     const Purchase getPurchaseInstance(double amount, const std::string& type) const;

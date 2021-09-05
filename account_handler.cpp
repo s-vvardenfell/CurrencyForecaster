@@ -1,12 +1,13 @@
 #include "account_handler.hpp"
 
 AccountHandler::AccountHandler(QObject *parent) : QObject(parent),
-    curl_handler_(nullptr), db_handler_(nullptr), parser_(nullptr),
+    db_handler_(nullptr), parser_(nullptr),
     bank_name_("Some bank"), account_("1234567890")
 {
-    curl_handler_ = std::make_unique<CurlHandler>();
     db_handler_ = std::make_unique<DataBaseHandler>();
+
     parser_ = std::make_unique<Parser>();
+
 }
 
 bool AccountHandler::login()

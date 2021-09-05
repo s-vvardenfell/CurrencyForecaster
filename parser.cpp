@@ -2,7 +2,8 @@
 
 
 
-Parser::Parser() : curl_handler_(nullptr), rmbr_data_(), rbk_data_(), parameters_(),  price_()
+Parser::Parser() :
+    curl_handler_(nullptr), rmbr_data_(), rbk_data_(), parameters_(),  price_()
 {
     curl_handler_ = std::make_unique<CurlHandler>();
 
@@ -10,17 +11,21 @@ Parser::Parser() : curl_handler_(nullptr), rmbr_data_(), rbk_data_(), parameters
     curl_handler_->setHeader("Connection", "Keep-Alive");
     curl_handler_->setHeader("Accept-Language", "en-US,en;q=0.9");
 
+    settings_ = Programm::readSettings("parser_settings.txt");
+
 }
 
-bool Parser::parseForecastRBK()
+std::vector<ForecastData> Parser::parseForecast0()
 {
+    const std::string url{settings_.at(0)};
+    std::vector<ForecastData> fdata;
+
     //убрал хедеры в конструктор
-    curl_handler_->setHeader("Host", "quote.rbc.ru");
+    curl_handler_->setHeader("Host", Programm::getHostFromUrl(url));
     curl_handler_->setHeader("Accept", "text/html, application/xhtml+xml, image/jxr, */*");
     curl_handler_->setHeader("Referer", "https://www.google.com/");
 
-    const std::string url_rbk{"https://quote.rbc.ru/ticker/59111"};
-    curl_handler_->query(url_rbk, methodType::GET);
+    curl_handler_->query(url, methodType::GET);
 
     CDocument html;
     html.parse(curl_handler_->getResponse());
@@ -28,7 +33,7 @@ bool Parser::parseForecastRBK()
     CSelection select = html.find(".q-item__review__container");
 
     if (select.nodeNum() == 0)
-        return false;
+        return fdata;
             //else
             //    cerr << select.nodeNum() << endl;
 
@@ -48,7 +53,7 @@ bool Parser::parseForecastRBK()
         rdata.accuracy_ = Programm::normalizeString(node.find(".q-item__review__value").nodeAt(3).text());
         rdata.value_review_= Programm::normalizeString(node.find(".q-item__review__change").nodeAt(0).text());
 
-        rbk_data_.push_back(rdata);
+        fdata.push_back(rdata);
     }
 
 //    for(const auto& forecast: rbk_vec_)
@@ -56,18 +61,19 @@ bool Parser::parseForecastRBK()
 //        qDebug()<<QString::fromStdString(forecast.Parser_ +" " + forecast.forecast_date_+" "+forecast.value_+" "+forecast.period_+" "+forecast.accuracy_+" "+forecast.value_review_);
 //    }
 
-    return true;
+    return fdata;
 }
 
 
-bool Parser::parseForecastRmbr()
+std::vector<ForecastData> Parser::parseForecast1()
 {
-    curl_handler_->setHeader("Host", "finance.rambler.ru");
+    const std::string url{settings_.at(1)};
+    std::vector<ForecastData> fdata;
+
+    curl_handler_->setHeader("Host", Programm::getHostFromUrl(url));
     curl_handler_->setHeader("Referer", "https://www.yandex.ru/");
 
-    const std::string url_rmb{"https://finance.rambler.ru/currencies/consensus"};
-
-    curl_handler_->query(url_rmb, methodType::GET);
+    curl_handler_->query(url, methodType::GET);
 
     CDocument html;
     html.parse(curl_handler_->getResponse());
@@ -94,7 +100,7 @@ bool Parser::parseForecastRmbr()
             rdata.value_ = to_string(temp.find("value").value());
             rdata.period_ = period;
 
-            rmbr_data_.push_back(rdata);
+            fdata.push_back(rdata);
 
         }
     }
@@ -104,7 +110,7 @@ bool Parser::parseForecastRmbr()
 //        qDebug()<<QString::fromStdString(forecast.Parser_ +" " + forecast.forecast_date_+" "+forecast.value_+" "+forecast.period_+" "+forecast.accuracy_+" "+forecast.value_review_);
 //    }
 
-    return true;
+    return fdata;
 }
 
 double Parser::getCurrentExcangeRate()
@@ -117,11 +123,11 @@ double Parser::getCurrentExcangeRate()
 
 std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
 {
+    const std::string url{settings_.at(2)};
     vector<CurrencyExchangeData> data{};
 
-    curl_handler_->setHeader("Host", "www.tinkoff.ru");
+    curl_handler_->setHeader("Host", Programm::getHostFromUrl(url));
     curl_handler_->setHeader("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0");
-    const std::string url{"https://www.tinkoff.ru/invest/currencies/"};
 
     curl_handler_->query(url, methodType::GET);
 

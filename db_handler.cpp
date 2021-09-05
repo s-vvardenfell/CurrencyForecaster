@@ -5,25 +5,11 @@
 DataBaseHandler::DataBaseHandler(): driver_(nullptr),
     connection_(nullptr), parser_handler_(nullptr)
 {
-    readSettings();
+    settings_ = Programm::readSettings("db_settings.txt");
+
     connectToDB();
 
     parser_handler_ = make_unique<Parser>();
-
-
-}
-
-void DataBaseHandler::readSettings()
-{
-    std::string settings_doc{ Programm::loadDocument("settings.txt") };
-
-    size_t pos{ 0 };
-
-    while ((pos = settings_doc.find(';')) != std::string::npos)
-    {
-        settings_.push_back(settings_doc.substr(0, pos));
-        settings_doc.erase(0, (settings_.back()).size() + 1);
-    }
 
 }
 

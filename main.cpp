@@ -11,7 +11,6 @@
 #include "account_handler.hpp"
 #include "purchase_object.hpp"
 #include "currency_exchange_data_object.hpp"
-#include "purchase_tablemodel.hpp"
 
 #include "sortfilterproxymodel.hpp"
 #include "purchase_tablemodel.hpp"
@@ -40,11 +39,12 @@
 //список операций - вывести все а не только buy
     //названия операций на русском
 
-//tableView для списка операций
-    //убрать старый listView
+//убрать ненужные классы и файлы purchase_object
 
-//убрать в бд адреса и тд сайтов которые я парсирую, тянуть их из бд / настроек
-//сделать tv рабочий
+//Структура parser - изменить для исп-я в qml
+
+//открыть репозиторий с проектом
+//вынести его на гл страницу профиля + ещё 1-2 нормальных
 
 
 

@@ -7,7 +7,7 @@ namespace Programm
     const string loadDocument(const string& file_name)
     {
         ifstream ifile;
-        ifile.open(path + file_name);
+        ifile.open(file_name);
 
         if(!ifile)
         {
@@ -26,7 +26,7 @@ namespace Programm
 
     bool saveDocument(const std::string& filename, const std::string& data)
     {
-        std::ofstream ofile(path + filename);
+        std::ofstream ofile(filename);
         if (!ofile) { qDebug() << "Cannot open file"<<Qt::endl; return false; }
         ofile << data;
         ofile.close();
@@ -70,18 +70,15 @@ namespace Programm
         size_t to_remove{};
 
         while((to_remove = where.find(what)) != std::string::npos)
-            where.erase(to_remove, 1);
-
+               where.erase(to_remove, 1);
     }
 
     std::string normalizeString(std::string where)
     {
-        size_t to_remove{};
-
-        while((to_remove = where.find('\t')) != std::string::npos) {where.erase(to_remove, 1);}
-        while((to_remove = where.find('\r')) != std::string::npos) {where.erase(to_remove, 1);}
-        while((to_remove = where.find('\n')) != std::string::npos) {where.erase(to_remove, 1);}
-        while((to_remove = where.find(' ')) != std::string::npos) {where.erase(to_remove, 1);}
+        where.erase(remove(where.begin(), where.end(), '\t'), where.end());
+        where.erase(remove(where.begin(), where.end(), '\r'), where.end());
+        where.erase(remove(where.begin(), where.end(), '\n'), where.end());
+        where.erase(remove(where.begin(), where.end(), ' '), where.end());
 
         return where;
     }
@@ -92,6 +89,34 @@ namespace Programm
         std::tm tm = *std::localtime(&t);
         std::stringstream ss; ss<< put_time(&tm, "%d.%m.%Y %T");
         return ss.str();
+    }
+
+    std::vector<std::string> readSettings(const string& file)
+    {
+        std::vector<std::string> settings;
+
+        std::ifstream ifile;
+        ifile.open(file);
+        if(!ifile)
+        {
+            qDebug()<<"Cannot open file "<<file.c_str();
+            throw Exception("Cannot open file " +file );
+        }
+
+        string line;
+        while(getline(ifile, line, ';'))
+            settings.push_back(line);
+
+        return settings;
+    }
+
+    const string getHostFromUrl(const string &file)
+    {
+        std::string temp;
+        temp = file.substr(file.find("//")+2);
+        temp = temp.substr(0, temp.find("/"));
+
+        return temp;
     }
 
 }

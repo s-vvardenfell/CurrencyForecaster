@@ -49,7 +49,7 @@ public:
     void findAndDeleteHeader(const std::string& type);
     const std::string urlEncode(const std::string url);
 
-    int query(const std::string& url, const methodType& method = methodType::POST,
+    int query(const std::string& url, const methodType& method = methodType::GET,
               const std::string& data = "", int port = 443, bool ignoreCurlCode = 0);
 
 };

@@ -52,7 +52,8 @@ public:
     std::vector<ForecastData> getForecastsFromRmbr();
     double getCurrentExcangeRate();
 
-//private:
+    std::vector<std::string> settings_;
+
     std::unique_ptr<CurlHandler> curl_handler_;
 
     std::vector<ForecastData> rmbr_data_;
@@ -66,14 +67,10 @@ public:
     //мб стоит инсертить данные прогноза в бд на текущий день
     //а в нужном месте забирать
     //убрать rmbr_data_ и подобное, сделать возвращаемые значения
-    bool parseForecastRBK();
-    bool parseForecastRmbr();
+    std::vector<ForecastData> parseForecast0();
+    std::vector<ForecastData> parseForecast1();
 
     std::vector<CurrencyExchangeData> parseCurrencyExchangeRate() const;
-
-
-
-
 };
 
 #endif // PARSER_H

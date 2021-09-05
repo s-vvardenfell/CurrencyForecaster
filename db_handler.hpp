@@ -42,7 +42,6 @@ private:
 
     std::vector<std::string> settings_;
 
-    void readSettings();
     void connectToDB();
 
 
