@@ -34,12 +34,19 @@
 //сделать правильную структуру: Account не должен создавать CurlHandler, но должен Parser мб
 
 //ф-ии buyAll в Account и reloadData в QML
+//фильтр работает не со всем колонками
+//добавить в buy/sell возможность выбора валюты!
+
+//список операций - вывести все а не только buy
+    //названия операций на русском
 
 //tableView для списка операций
     //убрать старый listView
 
 //убрать в бд адреса и тд сайтов которые я парсирую, тянуть их из бд / настроек
 //сделать tv рабочий
+
+
 
 int main(int argc, char *argv[])
 {
@@ -51,8 +58,8 @@ int main(int argc, char *argv[])
         QGuiApplication app(argc, argv);
 
         QQmlApplicationEngine engine;
+        const QUrl url(QStringLiteral("qrc:/appwindow.qml"));
 //        const QUrl url(QStringLiteral("qrc:/new_window.qml"));
-        const QUrl url(QStringLiteral("qrc:/tv_test2.qml"));
         QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                          &app, [url](QObject *obj, const QUrl &objUrl) {
             if (!obj && url == objUrl)
@@ -61,10 +68,10 @@ int main(int argc, char *argv[])
 
 
         AccountHandler acc;
-//        engine.rootContext()->setContextProperty("Account", &acc);
+        engine.rootContext()->setContextProperty("Account", &acc);
 
 
-//        //список операций
+        //список операций - список
 //        PurchaseModel pmodel;
 //        std::vector<Purchase> lots{ acc.getActiveLots() };
 //        for(const auto& lot : lots)
@@ -74,16 +81,17 @@ int main(int argc, char *argv[])
 //        engine.rootContext()->setContextProperty("pmodel", &pmodel);
 
 
-//        //список курсов валют
-//        CurrencyExchangeDataObjectModel cmodel;
-//        std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
-//        for(const auto& rate : currencies)
-//        {
-//            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
-//        }
-//        engine.rootContext()->setContextProperty("cmodel", &cmodel);
+        //список курсов валют
+        CurrencyExchangeDataObjectModel cmodel;
+        std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
+        for(const auto& rate : currencies)
+        {
+            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
+        }
+        engine.rootContext()->setContextProperty("cmodel", &cmodel);
 
-        //список операций
+
+        //список операций - таблица
         PurchaseTableModel ptmodel;
         std::vector<Purchase> lots{ acc.getActiveLots() };
         for(const auto& lot : lots)
@@ -95,7 +103,6 @@ int main(int argc, char *argv[])
 
         //исп мб этот тип для модели ListView тоже
         qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 0, 1, "SortFilterProxyModel");
-//        qmlRegisterType<PurchaseTableModel>("PurchaseTableModel", 0, 1, "PurchaseTableModel");
 
 
         engine.load(url);
