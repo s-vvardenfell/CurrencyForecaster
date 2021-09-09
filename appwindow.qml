@@ -41,7 +41,7 @@ Window
                 {
                     id: realblncTxt
                     anchors.left: parent.left
-                    text: 'Data base account balance'
+                    text: 'Account balance'
                 }
 
                 background: Rectangle
@@ -76,51 +76,6 @@ Window
                 }
             }
 
-            Label
-            {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.maximumHeight: clmn1.height / 20
-
-                Text
-                {
-                    id: realblncTxtRub
-                    anchors.left: parent.left
-                    text: 'Real account on site balance'
-                }
-
-                background: Rectangle
-                {
-                    color: "green"
-//                    border.color:  "#2b5278"
-//                    radius: 2
-//                    border.width: 2
-                }
-            }
-
-
-            Label
-            {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.maximumHeight: clmn1.height / 20
-
-                Text
-                {
-                    id: virtblncTxtRub
-                    anchors.centerIn: parent
-                    text: Account.getBankAccountBalanceFromSite()
-                }
-
-                background: Rectangle
-                {
-                    color: "green"
-//                    border.color:  "#2b5278"
-//                    radius: 2
-//                    border.width: 2
-                }
-            }
-
             Rectangle
             {
                 Layout.fillHeight: true
@@ -134,6 +89,20 @@ Window
                      text: 'predictions and forecasts'
                  }
              }
+
+            Rectangle
+            {
+                color: 'plum'
+                 Layout.fillWidth: true
+                 Layout.fillHeight: true
+                 Layout.maximumHeight: rect0.height
+
+                 Text
+                 {
+                     anchors.centerIn: parent
+                     text: 'another buttons and options'
+                 }
+            }
 
             ListView
             {
@@ -296,6 +265,7 @@ Window
 
             Rectangle
             {
+                id: rect0
                 color: 'plum'
                  Layout.fillWidth: true
                  Layout.fillHeight: true

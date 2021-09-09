@@ -107,7 +107,6 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
         purchase.bank_name = res->getString(6);
         purchase.account = res->getString(7);
 
-
         purchases.push_back(purchase);
     }
 
@@ -115,9 +114,7 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
     delete pstmt;
 
     return purchases;
-
 }
-
 
 
 void DataBaseHandler::createTable()

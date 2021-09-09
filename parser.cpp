@@ -43,7 +43,7 @@ std::vector<ForecastData> Parser::parseForecast0()
 
         ForecastData rdata{};
 
-        rdata.Parser_ = node.find(".q-item__review__value").nodeAt(2).text();
+        rdata.parser_ = node.find(".q-item__review__value").nodeAt(2).text();
         rdata.value_ = Programm::normalizeString(node.find(".q-item__review__sum").nodeAt(0).text());
         rdata.forecast_date_ = html.find(".q-item__review__date_big").nodeAt(i).text();
         rdata.period_ = node.find(".q-item__review__value").nodeAt(1).text();
@@ -89,7 +89,7 @@ std::vector<ForecastData> Parser::parseForecast1()
             ForecastData rdata{};
             json temp = jdata_period[i];
 
-            rdata.Parser_ = temp["Parser"]["name"].get<std::string>();
+            rdata.parser_ = temp["Parser"]["name"].get<std::string>();
 
             std::string temp_str = temp["date"].get<std::string>();
             rdata.forecast_date_ = temp_str.substr(0, temp_str.find('T'));

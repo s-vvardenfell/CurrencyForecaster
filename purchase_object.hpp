@@ -1,16 +1,11 @@
 #ifndef PURCHASEOBJECT_H
 #define PURCHASEOBJECT_H
 
-#include <QAbstractListModel>
-#include <QStringList>
-#include <QObject>
-
 #include "db_handler.hpp"
 
 class PurchaseObject
 {
 public:
-    PurchaseObject(const QString &type, const QString &size); //FOR TEST
     PurchaseObject(const Purchase &purchase);
 
     QString date() const;

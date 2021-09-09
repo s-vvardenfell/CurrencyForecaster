@@ -1,16 +1,5 @@
 #include "purchase_object.hpp"
 
-PurchaseObject::PurchaseObject(const QString &type, const QString &size)
-{
-     date_ = "date";
-     ptype_ = "ptype";
-     amount_ = 1234.66;
-     price_ = 55.6;
-     sum_ = 1233.4;
-     bank_name_ = "sber";
-     account_ = "22222";
-}
-
 PurchaseObject::PurchaseObject(const Purchase &purchase)
 {
     date_ = QString::fromStdString(purchase.date);

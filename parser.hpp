@@ -25,7 +25,7 @@ using json = nlohmann::json;
 
 typedef struct ForecastData
 {
-    std::string Parser_;
+    std::string parser_;
     std::string value_;
     std::string forecast_date_;
     std::string period_;
