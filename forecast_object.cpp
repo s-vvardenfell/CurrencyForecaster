@@ -11,32 +11,31 @@ ForecastObject::ForecastObject(const ForecastData &data) :
 
 }
 
-
-QString ForecastObject::parser()
+QString ForecastObject::parser() const
 {
     return parser_;
 }
 
-QString ForecastObject::value()
+QString ForecastObject::value() const
 {
     return value_;
 }
 
-QString ForecastObject::forecast_date()
+QString ForecastObject::forecast_date() const
 {
     return forecast_date_;
 }
 
-QString ForecastObject::period()
+QString ForecastObject::period() const
 {
     return period_;
 }
 
-QString ForecastObject::accuracy()
+QString ForecastObject::accuracy() const
 {
     return accuracy_;
 }
-QString ForecastObject::value_review()
+QString ForecastObject::value_review() const
 {
     return value_review_;
 }

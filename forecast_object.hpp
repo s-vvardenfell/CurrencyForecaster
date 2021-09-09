@@ -8,12 +8,12 @@ class ForecastObject
 public:
     ForecastObject(const ForecastData &data);
 
-    QString parser();
-    QString value();
-    QString forecast_date();
-    QString period();
-    QString accuracy();
-    QString value_review();
+    QString parser() const;
+    QString value() const;
+    QString forecast_date() const;
+    QString period() const;
+    QString accuracy() const;
+    QString value_review() const;
 
 private:
     QString parser_;

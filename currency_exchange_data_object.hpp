@@ -2,11 +2,11 @@
 #define CURRENCYEXCHANGEDATAOBJECT_HPP
 
 #include <QAbstractListModel>
-#include <QStringList>
 #include <QObject>
 
 #include "parser.hpp"
 
+//TODO РАЗНЕСТИ В РАЗНЫЕ ФАЙЛЫ
 class CurrencyExchangeDataObject
 {
 public:
