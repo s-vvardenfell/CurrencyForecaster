@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QObject>
 
-#include "db_handler.hpp"
+//#include "db_handler.hpp"
 #include "parser.hpp"
 
 class CurrencyExchangeDataObject

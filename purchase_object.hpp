@@ -31,33 +31,4 @@ private:
     QString account_;
 };
 
-class PurchaseModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum PurchaseRoles {
-        DateRole = Qt::UserRole + 1,
-        PtypeRole,
-        AmountRole,
-        PriceRole,
-        SumRole,
-        BankNameRole,
-        AccountRole
-    };
-
-    PurchaseModel(QObject *parent = 0);
-
-    void addPurchase(const PurchaseObject &Purchase);
-
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-private:
-    QList<PurchaseObject> m_Purchases;
-
-};
-
 #endif // PURCHASEOBJECT_H

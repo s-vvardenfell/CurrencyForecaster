@@ -1,9 +1,6 @@
 #include "parser.hpp"
 
-
-
-Parser::Parser() :
-    curl_handler_(nullptr), rmbr_data_(), rbk_data_(), parameters_(),  price_()
+Parser::Parser() :curl_handler_(nullptr)
 {
     curl_handler_ = std::make_unique<CurlHandler>();
 
@@ -115,10 +112,7 @@ std::vector<ForecastData> Parser::parseForecast1()
 
 double Parser::getCurrentExcangeRate()
 {
-   //мб где-то в конструкторе вызывать parseCurrencyExchangeRate
-    price_ = 78.45;
-
-    return price_;
+    return 78.45;
 }
 
 std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
@@ -162,16 +156,6 @@ std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
     return data;
 }
 
-
-std::vector<ForecastData> Parser::getForecastsFromRBK()
-{
-    return rmbr_data_;
-}
-
-std::vector<ForecastData> Parser::getForecastsFromRmbr()
-{
-    return rbk_data_;
-}
 
 
 

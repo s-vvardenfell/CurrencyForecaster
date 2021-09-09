@@ -70,16 +70,7 @@ int main(int argc, char *argv[])
         AccountHandler acc;
         engine.rootContext()->setContextProperty("Account", &acc);
 
-
-        //список операций - список
-//        PurchaseModel pmodel;
-//        std::vector<Purchase> lots{ acc.getActiveLots() };
-//        for(const auto& lot : lots)
-//        {
-//            pmodel.addPurchase(PurchaseObject(lot));
-//        }
-//        engine.rootContext()->setContextProperty("pmodel", &pmodel);
-
+        //прогнозы
 
         //список курсов валют
         CurrencyExchangeDataObjectModel cmodel;
@@ -91,7 +82,7 @@ int main(int argc, char *argv[])
         engine.rootContext()->setContextProperty("cmodel", &cmodel);
 
 
-        //список операций - таблица
+        //таблица операций
         PurchaseTableModel ptmodel;
         std::vector<Purchase> lots{ acc.getActiveLots() };
         for(const auto& lot : lots)
@@ -102,6 +93,7 @@ int main(int argc, char *argv[])
 
 
         //исп мб этот тип для модели ListView тоже
+        //фильтр
         qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 0, 1, "SortFilterProxyModel");
 
 

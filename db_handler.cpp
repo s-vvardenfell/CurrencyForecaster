@@ -20,27 +20,30 @@ void DataBaseHandler::connectToDB()
     connection_->setSchema(settings_.at(3));
 }
 
-
+//TODO
 void DataBaseHandler::insertForecastsToDB()
 {
-    auto rbk_data = parser_handler_->getForecastsFromRBK();
-    auto rmbr_data = parser_handler_->getForecastsFromRmbr();
+    auto data1 = parser_handler_->parseForecast0();
+    auto data2 = parser_handler_->parseForecast1();
 }
 
-
+//TODO
 void DataBaseHandler::insertCurrencyExchangeRateToDB()
 {
 //    auto exchange_rate = parser_handler_->getCurrencyExchangeRate(); //not implemented
 
 }
 
+//нужен ли select max если там сейчас одно значение
+//и оно update просто?
 double DataBaseHandler::getAccountBalance() const
 {
     sql::Statement *stmt;
     sql::ResultSet *res;
 
     stmt = connection_->createStatement();
-    res = stmt->executeQuery("SELECT balance FROM account_balance WHERE id = (SELECT MAX(id) FROM account_balance);");
+    res = stmt->executeQuery("SELECT balance FROM account_balance WHERE id = "
+                            "(SELECT MAX(id) FROM account_balance);");
 
     res->next();
     double balance = res->getInt("balance");

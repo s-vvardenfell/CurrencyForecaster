@@ -48,29 +48,15 @@ class Parser
 public:
     explicit Parser();
 
-    std::vector<ForecastData> getForecastsFromRBK();
-    std::vector<ForecastData> getForecastsFromRmbr();
-    double getCurrentExcangeRate();
-
-    std::vector<std::string> settings_;
-
-    std::unique_ptr<CurlHandler> curl_handler_;
-
-    std::vector<ForecastData> rmbr_data_;
-    std::vector<ForecastData> rbk_data_;
-
-    std::map<std::string, std::string> parameters_;
-
-    double price_;
-
-    //возвращаемые значения и хранение данных продумать
-    //мб стоит инсертить данные прогноза в бд на текущий день
-    //а в нужном месте забирать
-    //убрать rmbr_data_ и подобное, сделать возвращаемые значения
     std::vector<ForecastData> parseForecast0();
     std::vector<ForecastData> parseForecast1();
 
+    double getCurrentExcangeRate(); //вызывается в Account!! - временно вызывалось вместо нижней ф-и
     std::vector<CurrencyExchangeData> parseCurrencyExchangeRate() const;
+
+private:
+    std::vector<std::string> settings_;
+    std::unique_ptr<CurlHandler> curl_handler_;
 };
 
 #endif // PARSER_H
