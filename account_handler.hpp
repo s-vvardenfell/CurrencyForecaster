@@ -29,7 +29,7 @@ public:
     Q_INVOKABLE double getBankAccountBalanceFromSite(); //баланс в лк на сайте
     Q_INVOKABLE double getExcangeRate(); //нужна ли эта ф-я если парсим все валюты блоком?
 
-    std::vector<CurrencyExchangeData> getExcangeRates();
+    std::vector<CurrencyExchangeData> getExcangeRates() const;
     std::vector<Purchase> getActiveLots() const;
 
 private:

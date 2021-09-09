@@ -18,21 +18,7 @@
 #include "curl_handler.hpp"
 #include "programm.hpp"
 
-
 using json = nlohmann::json;
-
-//вынести в отельный файл?
-
-typedef struct ForecastData
-{
-    std::string parser_;
-    std::string value_;
-    std::string forecast_date_;
-    std::string period_;
-    std::string accuracy_{"null"};
-    std::string value_review_{"null"};
-
-}ForecastData;
 
 typedef struct CurrencyExchangeData
 {
@@ -47,9 +33,6 @@ class Parser
 
 public:
     explicit Parser();
-
-    std::vector<ForecastData> parseForecast0();
-    std::vector<ForecastData> parseForecast1();
 
     double getCurrentExcangeRate(); //вызывается в Account!! - временно вызывалось вместо нижней ф-и
     std::vector<CurrencyExchangeData> parseCurrencyExchangeRate() const;

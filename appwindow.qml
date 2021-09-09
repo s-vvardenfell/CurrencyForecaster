@@ -78,20 +78,6 @@ Window
 
             Rectangle
             {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-
-                color: 'lightgrey'
-
-                 Text
-                 {
-                     anchors.centerIn: parent
-                     text: 'predictions and forecasts'
-                 }
-             }
-
-            Rectangle
-            {
                 color: 'plum'
                  Layout.fillWidth: true
                  Layout.fillHeight: true
@@ -117,7 +103,7 @@ Window
 
                 delegate: Rectangle
                 {
-                    height: lv2.height / 5
+                    height: clmn1.height / 15
                     width: lv2.width
 
                     border.color:  "black"

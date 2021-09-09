@@ -10,10 +10,12 @@
 
 #include "account_handler.hpp"
 #include "purchase_object.hpp"
-#include "currency_exchange_data_object.hpp"
 
 #include "sortfilterproxymodel.hpp"
 #include "purchase_tablemodel.hpp"
+
+#include "currexcdata_object.hpp"
+#include "currexcdata_object_model.hpp"
 
 //TODO
 //добавить исключения
@@ -61,7 +63,6 @@ int main(int argc, char *argv[])
 
         QQmlApplicationEngine engine;
         const QUrl url(QStringLiteral("qrc:/appwindow.qml"));
-//        const QUrl url(QStringLiteral("qrc:/new_window.qml"));
         QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                          &app, [url](QObject *obj, const QUrl &objUrl) {
             if (!obj && url == objUrl)
@@ -72,19 +73,17 @@ int main(int argc, char *argv[])
         AccountHandler acc;
         engine.rootContext()->setContextProperty("Account", &acc);
 
-        //прогнозы
-
         //список курсов валют
-        CurrencyExchangeDataObjectModel cmodel;
+        CurrExcDataObjectModel cmodel;
         std::vector<CurrencyExchangeData> currencies { acc.getExcangeRates() };
         for(const auto& rate : currencies)
         {
-            cmodel.addCurrencyExchangeDataObject(CurrencyExchangeDataObject(rate));
+            cmodel.addCurrExcDataObject(CurrExcDataObject(rate));
         }
         engine.rootContext()->setContextProperty("cmodel", &cmodel);
 
 
-        //таблица операций
+        //таблица истории операций
         PurchaseTableModel ptmodel;
         std::vector<Purchase> lots{ acc.getActiveLots() };
         for(const auto& lot : lots)
@@ -95,7 +94,7 @@ int main(int argc, char *argv[])
 
 
         //исп мб этот тип для модели ListView тоже
-        //фильтр
+        //фильтр/поиск по истории
         qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 0, 1, "SortFilterProxyModel");
 
 

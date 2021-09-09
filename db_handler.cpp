@@ -3,14 +3,11 @@
 
 
 DataBaseHandler::DataBaseHandler(): driver_(nullptr),
-    connection_(nullptr), parser_handler_(nullptr)
+    connection_(nullptr)
 {
     settings_ = Programm::readSettings("db_settings.txt");
 
     connectToDB();
-
-    parser_handler_ = make_unique<Parser>();
-
 }
 
 void DataBaseHandler::connectToDB()
@@ -18,20 +15,6 @@ void DataBaseHandler::connectToDB()
     driver_ = get_driver_instance();
     connection_ = driver_->connect(settings_.at(0), settings_.at(1), settings_.at(2));
     connection_->setSchema(settings_.at(3));
-}
-
-//TODO
-void DataBaseHandler::insertForecastsToDB()
-{
-    auto data1 = parser_handler_->parseForecast0();
-    auto data2 = parser_handler_->parseForecast1();
-}
-
-//TODO
-void DataBaseHandler::insertCurrencyExchangeRateToDB()
-{
-//    auto exchange_rate = parser_handler_->getCurrencyExchangeRate(); //not implemented
-
 }
 
 //нужен ли select max если там сейчас одно значение

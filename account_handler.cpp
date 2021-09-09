@@ -98,7 +98,7 @@ double AccountHandler::getExcangeRate()
     return parser_->getCurrentExcangeRate();
 }
 
-std::vector<CurrencyExchangeData> AccountHandler::getExcangeRates()
+std::vector<CurrencyExchangeData> AccountHandler::getExcangeRates() const
 {
     return parser_->parseCurrencyExchangeRate();
 }

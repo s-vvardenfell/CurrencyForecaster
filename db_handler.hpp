@@ -37,28 +37,18 @@ class DataBaseHandler
 private:
     sql::Driver *driver_;
     sql::Connection *connection_;
-
-    std::unique_ptr<Parser> parser_handler_;
-
     std::vector<std::string> settings_;
 
     void connectToDB();
-
-
 
 public://проверить остальные методы на const
     explicit DataBaseHandler();
 
     void createTable();
-
     bool insertBuySellOperation(const Purchase& purchase);
-
-    void insertForecastsToDB();
     void insertCurrencyExchangeRateToDB();
-
     double getAccountBalance() const;
     bool updateBankAccount(int amount) const;
-
     std::vector<Purchase> getActualPurchases() const;
 
 };

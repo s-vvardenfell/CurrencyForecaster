@@ -13,21 +13,8 @@
 
 using namespace std;
 
-
 namespace Programm
 {
-
-//typedef struct ForecastData
-//{
-//    std::string Parser_;
-//    std::string value_;
-//    std::string forecast_date_;
-//    std::string period_;
-//    std::string accuracy_{"null"};
-//    std::string value_review_{"null"};
-
-//}ForecastData;
-
     const string loadDocument(const string& file_name);
     bool saveDocument(const std::string& filename, const std::string& data);
     const std::string parseDataFromPage(const std::string& where, const std::string& lstr, const std::string& rstr, bool with_left);
@@ -40,6 +27,4 @@ namespace Programm
 
     std::vector<std::string> readSettings(const std::string& file);
     const std::string getHostFromUrl(const std::string& file);
-
-
 }
