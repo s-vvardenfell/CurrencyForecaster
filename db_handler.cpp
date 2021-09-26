@@ -1,7 +1,5 @@
 #include "db_handler.hpp"
 
-
-
 DataBaseHandler::DataBaseHandler(): driver_(nullptr),
     connection_(nullptr)
 {
@@ -17,8 +15,6 @@ void DataBaseHandler::connectToDB()
     connection_->setSchema(settings_.at(3));
 }
 
-//нужен ли select max если там сейчас одно значение
-//и оно update просто?
 double DataBaseHandler::getAccountBalance() const
 {
     sql::Statement *stmt;
@@ -43,7 +39,8 @@ bool DataBaseHandler::updateBankAccount(int sum) const
     sql::ResultSet *res;
 
     stmt = connection_->createStatement();
-    res = stmt->executeQuery("SELECT MAX(id) FROM account_balance;");
+    res = stmt->executeQuery("SELECT balance FROM account_balance WHERE id = "
+                            "(SELECT MAX(id) FROM account_balance);");
 
     res->next();
     int id = res->getInt(1);
@@ -53,16 +50,14 @@ bool DataBaseHandler::updateBankAccount(int sum) const
 
     sql::PreparedStatement *pstmt;
     pstmt = connection_->prepareStatement(
-    "UPDATE account_balance SET date=?, balance=(balance+?) WHERE id =?;");
+    "INSERT INTO account_balance (date, balance) VALUES (?,?);");
 
     pstmt->setString(1, Programm::getDateTime());
-    pstmt->setInt(2, sum);
-    pstmt->setInt(3, id);
+    pstmt->setInt(2, sum + id);
 
     pstmt->executeUpdate();
     delete pstmt;
 
-    //TODO нужна проверка
     return true;
 }
 
@@ -73,7 +68,7 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
     sql::ResultSet *res;
 
     pstmt = connection_->prepareStatement(
-    "SELECT date, type, amount, price, sum, bank_name, account FROM my_purchases WHERE type = 'buy'");
+    "SELECT date, type, amount, price, sum, bank_name, account FROM my_purchases");
 
     res = pstmt->executeQuery();
 
@@ -127,7 +122,6 @@ bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)
     pstmt->executeUpdate();
     delete pstmt;
 
-    //TODO нужна проверка
     return true;
 }
 

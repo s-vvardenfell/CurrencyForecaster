@@ -78,10 +78,9 @@ Window
 
             Rectangle
             {
-                color: 'plum'
                  Layout.fillWidth: true
                  Layout.fillHeight: true
-                 Layout.maximumHeight: rect0.height
+                 Layout.maximumHeight: lv2.height /8
 
                  Text
                  {
@@ -251,16 +250,36 @@ Window
 
             Rectangle
             {
-                id: rect0
-                color: 'plum'
-                 Layout.fillWidth: true
-                 Layout.fillHeight: true
+                id: currencySelector
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
-                 Text
-                 {
-                     anchors.centerIn: parent
-                     text: 'another buttons and options'
+                 Grid {
+
+                     RadioButton {
+                         checked: true
+                         text: qsTr("USDRUB")
+                     }
+                     RadioButton {
+                         text: qsTr("EURRUB")
+                     }
+                     RadioButton {
+                         text: qsTr("GBPRUB")
+                     }
+                     RadioButton {
+                         text: qsTr("CNYRUB")
+                     }
+                     RadioButton {
+                         text: qsTr("JPYRUB")
+                     }
+                     RadioButton {
+                         text: qsTr("HKDRUB")
+                     }
+                     RadioButton {
+                         text: qsTr("TRYRUB")
+                     }
                  }
+
             }
 
             ToolBar
@@ -299,7 +318,7 @@ Window
                     role: "date"
                     movable: false
                     resizable: false
-                    width: tableView.viewport.width / 7
+                    width: tableView.viewport.width / 3
                 }
 
                 TableViewColumn {
@@ -326,7 +345,7 @@ Window
                     role: "price"
                     movable: false
                     resizable: false
-                    width: tableView.viewport.width / 7
+                    width: tableView.viewport.width / 5
                 }
 
                 TableViewColumn {
@@ -335,26 +354,26 @@ Window
                     role: "sum"
                     movable: false
                     resizable: false
-                    width: tableView.viewport.width / 7
+                    width: tableView.viewport.width / 5
                 }
 
-                TableViewColumn {
-                    id: accountColumn
-                    title: "Account"
-                    role: "account"
-                    movable: false
-                    resizable: false
-                    width: tableView.viewport.width / 7
-                }
+//                TableViewColumn {
+//                    id: accountColumn
+//                    title: "Account"
+//                    role: "account"
+//                    movable: false
+//                    resizable: false
+//                    width: tableView.viewport.width / 7
+//                }
 
-                TableViewColumn {
-                    id: bankColumn
-                    title: "Bank"
-                    role: "bank_name"
-                    movable: false
-                    resizable: false
-                    width: tableView.viewport.width / 7
-                }
+//                TableViewColumn {
+//                    id: bankColumn
+//                    title: "Bank"
+//                    role: "bank_name"
+//                    movable: false
+//                    resizable: false
+//                    width: tableView.viewport.width / 7
+//                }
 
                 model: SortFilterProxyModel {
                     id: proxyModel

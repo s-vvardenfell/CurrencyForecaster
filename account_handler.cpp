@@ -10,25 +10,8 @@ AccountHandler::AccountHandler(QObject *parent) : QObject(parent),
 
 }
 
-bool AccountHandler::login()
-{
-    //данные откуда берутся?
-    //вводить каждый раз или тянуть с бд / настроек?
-    return true;
-}
-
-bool AccountHandler::logout()
-{
-    return true;
-}
-
 bool AccountHandler::buy(double amount)
 {
-    //авторизауется? или уже авторизован
-    //совершает покупку
-    //заносит данные в бд об операции +
-    //корректирует таблицу balance
-
     //TODO вывод не в консоль а в qml окно с ссобщением
     if(db_handler_->insertBuySellOperation(getPurchaseInstance(amount, "buy")))
     {
@@ -46,13 +29,14 @@ bool AccountHandler::buy(double amount)
 
 bool AccountHandler::sell(double amount)
 {
-
-    //авторизауется? или уже авторизован
-    //совершает продажу
-    //заносит данные в бд об операции +
-    //корректирует таблицу balance
-
     //TODO вывод не в консоль а в qml окно с ссобщением
+
+    if(Programm::is_equal(db_handler_->getAccountBalance(), 0.0f))
+    {
+        qDebug() << "Balance is zero, cannot sell";
+        return false;
+    }
+
     if(db_handler_->insertBuySellOperation(getPurchaseInstance(amount, "sell")))
     {
         updateBankAccountBalanceOnDB(amount*=-1);
@@ -70,7 +54,7 @@ bool AccountHandler::sell(double amount)
 bool AccountHandler::sellAll()
 {
     double balance = getBankAccountBalanceFromDB();
-    if(sell(balance)) //вызывает продажу с аргументом-балансом денег на счету
+    if(sell(balance))
     {
         qDebug() << "Sold all "<<balance<<" dollars";
         return true;

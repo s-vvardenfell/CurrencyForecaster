@@ -34,7 +34,7 @@ class Parser
 public:
     explicit Parser();
 
-    double getCurrentExcangeRate(); //вызывается в Account!! - временно вызывалось вместо нижней ф-и
+    double getCurrentExcangeRate();
     std::vector<CurrencyExchangeData> parseCurrencyExchangeRate() const;
 
 private:

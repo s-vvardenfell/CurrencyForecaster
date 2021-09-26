@@ -18,8 +18,6 @@ class AccountHandler : public QObject
 public:
     explicit AccountHandler(QObject *parent = nullptr);
 
-    bool login();
-    bool logout();
     Q_INVOKABLE bool buy(double amount);
     Q_INVOKABLE bool sell(double amount);
     Q_INVOKABLE bool sellAll();

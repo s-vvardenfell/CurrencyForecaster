@@ -6,6 +6,8 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
+#include <limits>
 
 #include <QDebug>
 
@@ -27,4 +29,6 @@ namespace Programm
 
     std::vector<std::string> readSettings(const std::string& file);
     const std::string getHostFromUrl(const std::string& file);
+
+    bool is_equal(double x, double y);
 }

@@ -20,12 +20,12 @@ public:
 
     void addCurrExcDataObject(const CurrExcDataObject &object);
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
 
 protected:
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
 private:
     QList<CurrExcDataObject> objects_;
 };
