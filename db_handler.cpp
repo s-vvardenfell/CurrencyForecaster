@@ -17,46 +17,32 @@ void DataBaseHandler::connectToDB()
 
 double DataBaseHandler::getAccountBalance() const
 {
-    sql::Statement *stmt;
-    sql::ResultSet *res;
+    std::unique_ptr<sql::Statement> stmt{connection_->createStatement()};
 
-    stmt = connection_->createStatement();
-    res = stmt->executeQuery("SELECT balance FROM account_balance WHERE id = "
-                            "(SELECT MAX(id) FROM account_balance);");
+    unique_ptr<sql::ResultSet> res {
+        stmt->executeQuery("SELECT balance FROM account_balance WHERE id = "
+        "(SELECT MAX(id) FROM account_balance);") };
 
     res->next();
-    double balance = res->getInt("balance");
 
-    delete res;
-    delete stmt;
-
-    return balance;
+    return res->getDouble("balance");
 }
 
 bool DataBaseHandler::updateBankAccount(int sum) const
 {
-    sql::Statement *stmt;
-    sql::ResultSet *res;
+    std::unique_ptr<sql::Statement> stmt{ connection_->createStatement()};
 
-    stmt = connection_->createStatement();
-    res = stmt->executeQuery("SELECT balance FROM account_balance WHERE id = "
-                            "(SELECT MAX(id) FROM account_balance);");
-
+    unique_ptr<sql::ResultSet> res {
+        stmt->executeQuery("SELECT balance FROM account_balance WHERE id = "
+                            "(SELECT MAX(id) FROM account_balance);") };
     res->next();
-    int id = res->getInt(1);
 
-    delete res;
-    delete stmt;
-
-    sql::PreparedStatement *pstmt;
-    pstmt = connection_->prepareStatement(
-    "INSERT INTO account_balance (date, balance) VALUES (?,?);");
+    std::unique_ptr<sql::PreparedStatement> pstmt{ connection_->prepareStatement(
+    "INSERT INTO account_balance (date, balance) VALUES (?,?);")};
 
     pstmt->setString(1, Programm::getDateTime());
-    pstmt->setInt(2, sum + id);
-
+    pstmt->setInt(2, sum + res->getInt(1));
     pstmt->executeUpdate();
-    delete pstmt;
 
     return true;
 }
@@ -64,14 +50,11 @@ bool DataBaseHandler::updateBankAccount(int sum) const
 std::vector<Purchase> DataBaseHandler::getActualPurchases() const
 {
     std::vector<Purchase> purchases;
-    sql::PreparedStatement *pstmt;
-    sql::ResultSet *res;
 
-    pstmt = connection_->prepareStatement(
-    "SELECT date, type, amount, price, sum, bank_name, account FROM my_purchases");
+    std::unique_ptr<sql::PreparedStatement> pstmt{ connection_->prepareStatement(
+    "SELECT date, type, amount, price, sum, bank_name, account FROM my_purchases") };
 
-    res = pstmt->executeQuery();
-
+    unique_ptr<sql::ResultSet> res { pstmt->executeQuery() };
 
     while (res->next())
     {
@@ -88,28 +71,22 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
         purchases.push_back(purchase);
     }
 
-    delete res;
-    delete pstmt;
-
     return purchases;
 }
 
 
 void DataBaseHandler::createTable()
 {
-    sql::Statement *stmt;
-    stmt = connection_->createStatement();
+    std::unique_ptr<sql::Statement> stmt{ connection_->createStatement() };
     stmt->execute("CREATE TABLE people33 (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, full_name VARCHAR(50) NOT NULL, "
         "birthday DATE NOT NULL, sex VARCHAR(10) NOT NULL);");
-
-    delete stmt;
 }
 
 bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)
 {
-    sql::PreparedStatement *pstmt;
-    pstmt = connection_->prepareStatement(
-    "INSERT INTO my_purchases (date, type, amount, price, sum, bank_name, account) VALUES (?,?,?,?,?,?,?);");
+    std::unique_ptr<sql::PreparedStatement> pstmt{ connection_->prepareStatement(
+    "INSERT INTO my_purchases (date, type, amount, price, sum, bank_name, account) "
+        "VALUES (?,?,?,?,?,?,?);") };
 
     pstmt->setString(1, purchase.date);
     pstmt->setString(2, purchase.type);
@@ -120,7 +97,6 @@ bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)
     pstmt->setString(7, purchase.account);
 
     pstmt->executeUpdate();
-    delete pstmt;
 
     return true;
 }

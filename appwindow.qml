@@ -102,7 +102,7 @@ Window
 
                 delegate: Rectangle
                 {
-                    height: clmn1.height / 15
+                    height: clmn1.height / 12
                     width: lv2.width
 
                     border.color:  "black"
