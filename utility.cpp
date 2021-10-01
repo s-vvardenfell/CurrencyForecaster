@@ -1,6 +1,6 @@
-#include "programm.hpp"
+#include "utility.hpp"
 
-namespace Programm
+namespace Utility
 {
     static const std::string path {"/home/chaginsergey/Downloads/"};
 

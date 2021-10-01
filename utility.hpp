@@ -1,7 +1,5 @@
-#ifndef PROGRAMM_HPP
-#define PROGRAMM_HPP
-
-#endif // PROGRAMM_HPP
+#ifndef UTILITY_H
+#define UTILITY_H
 
 #include <string>
 #include <fstream>
@@ -15,7 +13,25 @@
 
 using namespace std;
 
-namespace Programm
+struct Purchase
+{
+    std::string date;
+    std::string type;
+    double      amount;
+    double      price;
+    double      sum;
+    std::string bank_name;
+    std::string account;
+};
+
+struct CurrencyExchangeData
+{
+    std::string currency_;
+    std::string change_;
+    std::string cost_;
+};
+
+namespace Utility
 {
     const string loadDocument(const string& file_name);
     bool saveDocument(const std::string& filename, const std::string& data);
@@ -32,3 +48,5 @@ namespace Programm
 
     bool is_equal(double x, double y);
 }
+
+#endif // UTILITY_H

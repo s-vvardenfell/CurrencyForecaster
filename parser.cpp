@@ -8,7 +8,7 @@ Parser::Parser() :curl_handler_(nullptr)
     curl_handler_->setHeader("Connection", "Keep-Alive");
     curl_handler_->setHeader("Accept-Language", "en-US,en;q=0.9");
 
-    settings_ = Programm::readSettings("parser_settings.txt");
+    settings_ = Utility::readSettings("parser_settings.txt");
 
 }
 
@@ -22,12 +22,12 @@ std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
     const std::string url{settings_.at(2)};
     vector<CurrencyExchangeData> data{};
 
-    curl_handler_->setHeader("Host", Programm::getHostFromUrl(url));
+    curl_handler_->setHeader("Host", Utility::getHostFromUrl(url));
     curl_handler_->setHeader("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0");
 
     curl_handler_->query(url, methodType::GET);
 
-    string table_name = Programm::parseDataFromPage(curl_handler_->getResponse(),
+    string table_name = Utility::parseDataFromPage(curl_handler_->getResponse(),
                                                     "Table__table_", " Table__", true);
     CDocument html{};
     html.parse(curl_handler_->getResponse());

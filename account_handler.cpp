@@ -16,8 +16,6 @@ bool AccountHandler::buy(double amount)
     if(db_handler_->insertBuySellOperation(getPurchaseInstance(amount, "buy")))
     {
         updateBankAccountBalanceOnDB(amount);
-
-        qDebug() << "Bought "<<amount<<" dollars";
         return true;
     }
     else
@@ -31,7 +29,7 @@ bool AccountHandler::sell(double amount)
 {
     //TODO вывод не в консоль а в qml окно с ссобщением
 
-    if(Programm::is_equal(db_handler_->getAccountBalance(), 0.0f))
+    if(Utility::is_equal(db_handler_->getAccountBalance(), 0.0f))
     {
         qDebug() << "Balance is zero, cannot sell";
         return false;
@@ -40,8 +38,6 @@ bool AccountHandler::sell(double amount)
     if(db_handler_->insertBuySellOperation(getPurchaseInstance(amount, "sell")))
     {
         updateBankAccountBalanceOnDB(amount*=-1);
-
-        qDebug() << "Sold "<<amount<<" dollars";
         return true;
     }
     else
@@ -56,7 +52,6 @@ bool AccountHandler::sellAll()
     double balance = getBankAccountBalanceFromDB();
     if(sell(balance))
     {
-        qDebug() << "Sold all "<<balance<<" dollars";
         return true;
     }
     else
@@ -96,7 +91,7 @@ const Purchase AccountHandler::getPurchaseInstance(double amount,
                                                    const std::string& type) const
 {
     Purchase purchase;
-    purchase.date = Programm::getDateTime();
+    purchase.date = Utility::getDateTime();
     purchase.type = type;
     purchase.amount = amount;
     purchase.price = parser_->getCurrentExcangeRate();

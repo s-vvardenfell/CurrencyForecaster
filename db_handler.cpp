@@ -3,7 +3,7 @@
 DataBaseHandler::DataBaseHandler(): driver_(nullptr),
     connection_(nullptr)
 {
-    settings_ = Programm::readSettings("db_settings.txt");
+    settings_ = Utility::readSettings("db_settings.txt");
 
     connectToDB();
 }
@@ -40,7 +40,7 @@ bool DataBaseHandler::updateBankAccount(int sum) const
     std::unique_ptr<sql::PreparedStatement> pstmt{ connection_->prepareStatement(
     "INSERT INTO account_balance (date, balance) VALUES (?,?);")};
 
-    pstmt->setString(1, Programm::getDateTime());
+    pstmt->setString(1, Utility::getDateTime());
     pstmt->setInt(2, sum + res->getInt(1));
     pstmt->executeUpdate();
 
@@ -72,14 +72,6 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
     }
 
     return purchases;
-}
-
-
-void DataBaseHandler::createTable()
-{
-    std::unique_ptr<sql::Statement> stmt{ connection_->createStatement() };
-    stmt->execute("CREATE TABLE people33 (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, full_name VARCHAR(50) NOT NULL, "
-        "birthday DATE NOT NULL, sex VARCHAR(10) NOT NULL);");
 }
 
 bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)

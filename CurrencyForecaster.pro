@@ -15,10 +15,10 @@ SOURCES += \
         db_handler.cpp \
         main.cpp \
         parser.cpp \
-        programm.cpp \
         purchase_object.cpp \
         purchase_tablemodel.cpp \
-        sortfilterproxymodel.cpp
+        sortfilterproxymodel.cpp \
+        utility.cpp
 
 HEADERS += \
         account_handler.hpp \
@@ -28,10 +28,10 @@ HEADERS += \
         db_handler.hpp \
         exception.hpp \
         parser.hpp \
-        programm.hpp \
         purchase_object.hpp \
         purchase_tablemodel.hpp \
-        sortfilterproxymodel.hpp
+        sortfilterproxymodel.hpp \
+        utility.hpp
 
 
 INCLUDEPATH += \

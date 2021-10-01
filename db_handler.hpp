@@ -11,25 +11,13 @@
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
 
-#include "parser.hpp"
+#include "utility.hpp"
 
 enum class OperationType
 {
     SELL,
     BUY
 };
-
-typedef struct Purchase
-{
-    std::string date;
-    std::string type;
-    double      amount;
-    double      price;
-    double      sum;
-    std::string bank_name;
-    std::string account;
-
-}Purchase;
 
 class DataBaseHandler
 {
@@ -41,10 +29,9 @@ private:
 
     void connectToDB();
 
-public://проверить остальные методы на const
-    explicit DataBaseHandler();
+public:
+    DataBaseHandler();
 
-    void createTable();
     bool insertBuySellOperation(const Purchase& purchase);
     void insertCurrencyExchangeRateToDB();
     double getAccountBalance() const;

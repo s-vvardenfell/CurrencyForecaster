@@ -1,7 +1,7 @@
 #ifndef CURREXCDATAOBJECT_HPP
 #define CURREXCDATAOBJECT_HPP
 
-#include "parser.hpp"
+#include "utility.hpp"
 
 class CurrExcDataObject
 {

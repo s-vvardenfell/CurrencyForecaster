@@ -16,17 +16,9 @@
 #include "nlohmann/json.hpp"
 
 #include "curl_handler.hpp"
-#include "programm.hpp"
+#include "utility.hpp"
 
 using json = nlohmann::json;
-
-typedef struct CurrencyExchangeData
-{
-    std::string currency_;
-    std::string change_;
-    std::string cost_;
-
-}CurrencyExchangeData;
 
 class Parser
 {
