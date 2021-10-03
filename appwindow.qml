@@ -35,7 +35,8 @@ Window
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.maximumHeight: clmn1.height / 20
+                Layout.maximumHeight: buyBtn.height
+                Layout.minimumHeight: buyBtn.height
 
                 Text
                 {
@@ -46,9 +47,9 @@ Window
 
                 background: Rectangle
                 {
-                    color: "green"
+                    color: "lightgrey"
 //                    border.color:  "#2b5278"
-//                    radius: 2
+//                    radius: 5
 //                    border.width: 2
                 }
             }
@@ -58,7 +59,13 @@ Window
             {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.maximumHeight: clmn1.height / 20
+                Layout.maximumHeight: buyBtn.height
+                Layout.minimumHeight: buyBtn.height
+
+                Text
+                {
+                    text: "Balance:"
+                }
 
                 Text
                 {
@@ -69,25 +76,25 @@ Window
 
                 background: Rectangle
                 {
-                    color: "green"
+                    color: "lightgrey"
 //                    border.color:  "#2b5278"
-//                    radius: 2
+//                    radius: 5
 //                    border.width: 2
                 }
             }
 
-            Rectangle
-            {
-                 Layout.fillWidth: true
-                 Layout.fillHeight: true
-                 Layout.maximumHeight: lv2.height /8
+//            Rectangle
+//            {
+//                 Layout.fillWidth: true
+//                 Layout.fillHeight: true
+//                 Layout.maximumHeight: lv2.height /8
 
-                 Text
-                 {
-                     anchors.centerIn: parent
-                     text: 'another buttons and options'
-                 }
-            }
+//                 Text
+//                 {
+//                     anchors.centerIn: parent
+//                     text: 'another buttons and options'
+//                 }
+//            }
 
             ListView
             {
@@ -145,6 +152,7 @@ Window
 
                 Button
                 {
+                    id: buyBtn
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
@@ -199,6 +207,7 @@ Window
 
                 Button
                 {
+                    id: sellBtn
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 

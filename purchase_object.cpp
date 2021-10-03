@@ -1,14 +1,12 @@
 #include "purchase_object.hpp"
 
-PurchaseObject::PurchaseObject(const Purchase &purchase)
+PurchaseObject::PurchaseObject(const Purchase &purchase) :
+    date_(QString::fromStdString(purchase.date)), ptype_(QString::fromStdString(purchase.type)),
+    amount_(purchase.amount), price_(purchase.price), sum_(purchase.sum),
+    bank_name_(QString::fromStdString(purchase.bank_name)),
+    account_(QString::fromStdString(purchase.account))
 {
-    date_ = QString::fromStdString(purchase.date);
-    ptype_ = QString::fromStdString(purchase.type);
-    amount_ = purchase.amount;
-    price_ = purchase.price;
-    sum_ = purchase.sum;
-    bank_name_ = QString::fromStdString(purchase.bank_name);
-    account_ = QString::fromStdString(purchase.account);
+
 }
 
 QString PurchaseObject::date() const
