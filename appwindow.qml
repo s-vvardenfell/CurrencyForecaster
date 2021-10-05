@@ -30,58 +30,87 @@ Window
             Layout.fillHeight: true
             Layout.minimumWidth: rlayout.width * 0.4
 
-            Label
+            TableView
             {
-
+                id: balanceTV
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.maximumHeight: buyBtn.height
-                Layout.minimumHeight: buyBtn.height
+                Layout.maximumHeight: clmn1.height / 3
 
-                Text
-                {
-                    id: realblncTxt
-                    anchors.left: parent.left
-                    text: 'Account balance'
+                model: bmodel
+
+                TableViewColumn {
+//                    id: dateColumn
+                    title: "Date"
+                    role: "date"
+                    movable: false
+                    resizable: false
+                    width: balanceTV.viewport.width / 2
                 }
 
-                background: Rectangle
-                {
-                    color: "lightgrey"
-//                    border.color:  "#2b5278"
-//                    radius: 5
-//                    border.width: 2
+                TableViewColumn {
+//                    id: ptypeColumn
+                    title: "Balance"
+                    role: "balance"
+                    movable: false
+                    resizable: false
+                    width: balanceTV.viewport.width / 2
                 }
+
             }
 
+//            Label
+//            {
 
-            Label
-            {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.maximumHeight: buyBtn.height
-                Layout.minimumHeight: buyBtn.height
+//                Layout.fillWidth: true
+//                Layout.fillHeight: true
+//                Layout.maximumHeight: buyBtn.height
+//                Layout.minimumHeight: buyBtn.height
 
-                Text
-                {
-                    text: "Balance:"
-                }
+//                Text
+//                {
+//                    id: realblncTxt
+//                    anchors.left: parent.left
+//                    text: 'Account balance'
+//                }
 
-                Text
-                {
-                    id: virtblncTxt
-                    anchors.centerIn: parent
-                    text: Account.getBankAccountBalanceFromDB()
-                }
+//                background: Rectangle
+//                {
+//                    color: "lightgrey"
+////                    border.color:  "#2b5278"
+////                    radius: 5
+////                    border.width: 2
+//                }
+//            }
 
-                background: Rectangle
-                {
-                    color: "lightgrey"
-//                    border.color:  "#2b5278"
-//                    radius: 5
-//                    border.width: 2
-                }
-            }
+
+//            Label
+//            {
+//                Layout.fillWidth: true
+//                Layout.fillHeight: true
+//                Layout.maximumHeight: buyBtn.height
+//                Layout.minimumHeight: buyBtn.height
+
+//                Text
+//                {
+//                    text: "Balance:"
+//                }
+
+//                Text
+//                {
+//                    id: virtblncTxt
+//                    anchors.centerIn: parent
+//                    text: Account.getBankAccountBalanceFromDB()
+//                }
+
+//                background: Rectangle
+//                {
+//                    color: "lightgrey"
+////                    border.color:  "#2b5278"
+////                    radius: 5
+////                    border.width: 2
+//                }
+//            }
 
 //            Rectangle
 //            {

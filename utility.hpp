@@ -31,6 +31,12 @@ struct CurrencyExchangeData
     std::string cost_;
 };
 
+struct BalanceData
+{
+    std::string date_;
+    std::string balance_;
+};
+
 namespace Utility
 {
     const string loadDocument(const string& file_name);

@@ -57,7 +57,6 @@ QHash<int, QByteArray> PurchaseTableModel::roleNames() const
 
 void PurchaseTableModel::addPurchase(const PurchaseObject &obj)
 {
-    //здесь каков порядок стобцы и строки передавать как
     beginInsertRows(QModelIndex(), rowCount(), columnCount());
     purchases_ << obj;
     endInsertRows();

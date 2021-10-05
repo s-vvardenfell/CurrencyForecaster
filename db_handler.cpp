@@ -74,6 +74,28 @@ std::vector<Purchase> DataBaseHandler::getActualPurchases() const
     return purchases;
 }
 
+std::vector<BalanceData> DataBaseHandler::getBalanceHistory() const
+{
+    std::unique_ptr<sql::Statement> stmt{connection_->createStatement()};
+
+    unique_ptr<sql::ResultSet> res {
+        stmt->executeQuery("SELECT * FROM account_balance ORDER BY id DESC;")};
+
+    std::vector<BalanceData> bdata;
+
+    while (res->next())
+    {
+        BalanceData data;
+
+        data.date_ = res->getString(2);
+        data.balance_ = std::to_string(res->getDouble(3));
+
+        bdata.push_back(data);
+    }
+
+    return bdata;
+}
+
 bool DataBaseHandler::insertBuySellOperation(const Purchase& purchase)
 {
     std::unique_ptr<sql::PreparedStatement> pstmt{ connection_->prepareStatement(

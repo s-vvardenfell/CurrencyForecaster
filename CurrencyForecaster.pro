@@ -9,6 +9,8 @@ CONFIG += c++17
 
 SOURCES += \
         account_handler.cpp \
+        balancedatamodel.cpp \
+        balancedataobject.cpp \
         curl_handler.cpp \
         currexcdata_object.cpp \
         currexcdata_object_model.cpp \
@@ -22,6 +24,8 @@ SOURCES += \
 
 HEADERS += \
         account_handler.hpp \
+        balancedatamodel.hpp \
+        balancedataobject.hpp \
         curl_handler.hpp \
         currexcdata_object.hpp \
         currexcdata_object_model.hpp \

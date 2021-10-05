@@ -87,6 +87,11 @@ std::vector<Purchase> AccountHandler::getActiveLots() const
     return db_handler_->getActualPurchases();
 }
 
+std::vector<BalanceData> AccountHandler::getBalanceHistory() const
+{
+    return db_handler_->getBalanceHistory();
+}
+
 const Purchase AccountHandler::getPurchaseInstance(double amount,
                                                    const std::string& type) const
 {

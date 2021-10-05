@@ -37,7 +37,7 @@ public:
     double getAccountBalance() const;
     bool updateBankAccount(int amount) const;
     std::vector<Purchase> getActualPurchases() const;
-
+    std::vector<BalanceData> getBalanceHistory() const;
 };
 
 #endif // DB_HANDLER_H

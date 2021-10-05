@@ -27,6 +27,7 @@ public:
 
     std::vector<CurrencyExchangeData> getExcangeRates() const;
     std::vector<Purchase> getActiveLots() const;
+    std::vector<BalanceData> getBalanceHistory() const;
 
 private:
     std::unique_ptr<DataBaseHandler> db_handler_;

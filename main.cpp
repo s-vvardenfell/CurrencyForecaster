@@ -13,10 +13,11 @@
 
 #include "sortfilterproxymodel.hpp"
 #include "purchase_tablemodel.hpp"
+#include "balancedatamodel.hpp"
 
 #include "currexcdata_object.hpp"
 #include "currexcdata_object_model.hpp"
-
+#include "balancedataobject.hpp"
 
 
 
@@ -40,6 +41,15 @@ int main(int argc, char *argv[])
 
         AccountHandler acc;
         engine.rootContext()->setContextProperty("Account", &acc);
+
+        //история баланса
+        BalanceDataModel bmodel;
+        std::vector<BalanceData> data{acc.getBalanceHistory()};
+        for(const auto& dt : data)
+        {
+            bmodel.addBalanceHistoryObject(BalanceDataObject(dt));
+        }
+        engine.rootContext()->setContextProperty("bmodel", &bmodel);
 
         //список курсов валют
         CurrExcDataObjectModel cmodel;
