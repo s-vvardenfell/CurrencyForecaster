@@ -15,7 +15,6 @@ namespace Utility
             return "";
         }
 
-
         string doc, line;
 
         while(getline(ifile, line))

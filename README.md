@@ -7,11 +7,9 @@ What's done:<br>
 * Table with operations history, stored in MySQL<br>
 * List of exchange rates<br>
 * Account balance demo, will be re-written to display currency-based accounts<br>
+* The ability to choose and buy different currencies with different prices<br>
 
-At work:<br>
-* The ability to choose and buy different currencies<br>
-
-![Иллюстрация к проекту](https://github.com/s-vvardenfell/CurrencyForecaster/blob/main/images/Screenshot.png)
+![Иллюстрация к проекту](https://github.com/s-vvardenfell/CurrencyForecaster/blob/main/images/Screenshot2.png)
 
 
 

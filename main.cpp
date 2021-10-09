@@ -70,8 +70,6 @@ int main(int argc, char *argv[])
         }
         engine.rootContext()->setContextProperty("ptmodel", &ptmodel);
 
-
-        //исп мб этот тип для модели ListView тоже
         //фильтр/поиск по истории
         qmlRegisterType<SortFilterProxyModel>("SortFilterProxyModel", 0, 1, "SortFilterProxyModel");
 

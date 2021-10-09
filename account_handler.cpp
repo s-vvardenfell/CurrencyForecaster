@@ -1,13 +1,10 @@
 #include "account_handler.hpp"
 
 AccountHandler::AccountHandler(QObject *parent) : QObject(parent),
-    db_handler_(nullptr), parser_(nullptr),
-    bank_name_("Some bank"), account_("1234567890")
+    db_handler_(nullptr), parser_(nullptr)
 {
     db_handler_ = std::make_unique<DataBaseHandler>();
-
     parser_ = std::make_unique<Parser>();
-
 }
 
 bool AccountHandler::buy(double amount)
@@ -59,7 +56,6 @@ bool AccountHandler::sellAll()
         qDebug() << "Some error occured during selling all";
         return false;
     }
-
 }
 
 double AccountHandler::getBankAccountBalanceFromDB()
@@ -67,14 +63,14 @@ double AccountHandler::getBankAccountBalanceFromDB()
     return db_handler_->getAccountBalance();
 }
 
-double AccountHandler::getBankAccountBalanceFromSite()
+double AccountHandler::getExcangeRate() const
 {
-    return 30.55;
+    return db_handler_->getCurrencyExchangeRate(selected_);
 }
 
-double AccountHandler::getExcangeRate()
+void AccountHandler::getSelectedCurrency(const QString type)
 {
-    return parser_->getCurrentExcangeRate();
+    selected_ = type.toStdString();
 }
 
 std::vector<CurrencyExchangeData> AccountHandler::getExcangeRates() const
@@ -92,22 +88,21 @@ std::vector<BalanceData> AccountHandler::getBalanceHistory() const
     return db_handler_->getBalanceHistory();
 }
 
-const Purchase AccountHandler::getPurchaseInstance(double amount,
-                                                   const std::string& type) const
+const Purchase AccountHandler::getPurchaseInstance(double amount, const std::string& type,
+        const std::string bank, const std::string account) const
 {
     Purchase purchase;
     purchase.date = Utility::getDateTime();
     purchase.type = type;
     purchase.amount = amount;
-    purchase.price = parser_->getCurrentExcangeRate();
+    purchase.price = this->getExcangeRate();
     purchase.sum = (amount * purchase.price);
-    purchase.bank_name = bank_name_;
-    purchase.account = account_;
+    purchase.bank_name = bank;
+    purchase.account = account;
 
     return purchase;
 }
 
-//будет принимать аргументы
 bool AccountHandler::updateBankAccountBalanceOnDB(int sum) const
 {
     return db_handler_->updateBankAccount(sum);

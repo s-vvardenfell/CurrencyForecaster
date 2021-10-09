@@ -26,7 +26,6 @@ class Parser
 public:
     explicit Parser();
 
-    double getCurrentExcangeRate();
     std::vector<CurrencyExchangeData> parseCurrencyExchangeRate() const;
 
 private:

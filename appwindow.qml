@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
 import QtQuick.Controls 2.12
 
-//import PurchaseTableModel 0.1
 import SortFilterProxyModel 0.1
 
 
@@ -59,72 +58,6 @@ Window
 
             }
 
-//            Label
-//            {
-
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//                Layout.maximumHeight: buyBtn.height
-//                Layout.minimumHeight: buyBtn.height
-
-//                Text
-//                {
-//                    id: realblncTxt
-//                    anchors.left: parent.left
-//                    text: 'Account balance'
-//                }
-
-//                background: Rectangle
-//                {
-//                    color: "lightgrey"
-////                    border.color:  "#2b5278"
-////                    radius: 5
-////                    border.width: 2
-//                }
-//            }
-
-
-//            Label
-//            {
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//                Layout.maximumHeight: buyBtn.height
-//                Layout.minimumHeight: buyBtn.height
-
-//                Text
-//                {
-//                    text: "Balance:"
-//                }
-
-//                Text
-//                {
-//                    id: virtblncTxt
-//                    anchors.centerIn: parent
-//                    text: Account.getBankAccountBalanceFromDB()
-//                }
-
-//                background: Rectangle
-//                {
-//                    color: "lightgrey"
-////                    border.color:  "#2b5278"
-////                    radius: 5
-////                    border.width: 2
-//                }
-//            }
-
-//            Rectangle
-//            {
-//                 Layout.fillWidth: true
-//                 Layout.fillHeight: true
-//                 Layout.maximumHeight: lv2.height /8
-
-//                 Text
-//                 {
-//                     anchors.centerIn: parent
-//                     text: 'another buttons and options'
-//                 }
-//            }
-
             ListView
             {
                 id: lv2
@@ -144,23 +77,34 @@ Window
                     border.color:  "black"
                     radius: 5
                     border.width: 2
-//                    color: "red"
 
                     required property string currency
                     required property string change
                     required property string cost
 
-//                    Button
-//                    {
-//                        anchors.centerIn: parent
-//                    }
-
-                    Text
+                    RowLayout
                     {
+                        anchors.margins: 20
                         anchors.fill: parent
-                        text: qsTr(currency + ", " + change + ", " + cost)
-                    }
 
+                        Text {
+                            id: cur
+                            text: currency
+                            Layout.alignment: Qt.AlignLeft
+                        }
+
+                        Text {
+                            id: ch
+                            text: change
+                            Layout.alignment: Qt.AlignHCenter
+                        }
+
+                        Text {
+                            id: cst
+                            text: cost
+                            Layout.alignment: Qt.AlignRight
+                        }
+                    }
                 }
 
             }
@@ -194,7 +138,6 @@ Window
                     {
                         Account.buy(spinboxBuy.value);
                         spinboxBuy.value = 0.0
-                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
@@ -224,7 +167,6 @@ Window
                         Account.sellAll();
                         spinboxBuy.value = 0.0
                         spinboxSell.value = 0.0
-                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
@@ -249,7 +191,6 @@ Window
                     {
                         Account.sell(spinboxSell.value);
                         spinboxSell.value = 0.0
-                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
@@ -280,7 +221,6 @@ Window
                         Account.sellAll();
                         spinboxBuy.value = 0.0
                         spinboxSell.value = 0.0
-                        virtblncTxt.text = Account.getBankAccountBalanceFromDB();
                     }
                 }
 
@@ -292,30 +232,51 @@ Window
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
+                ButtonGroup
+                {
+                    id: btnGr
+                    buttons: rbGrid.children
+
+                    onClicked:
+                    {
+                        Account.getSelectedCurrency(btnGr.checkedButton.text)
+                    }
+                }
+
                  Grid {
+                    id: rbGrid
 
                      RadioButton {
+                         id:usd
                          checked: true
                          text: qsTr("USDRUB")
                      }
                      RadioButton {
+                         id:eur
                          text: qsTr("EURRUB")
                      }
                      RadioButton {
+                         id:gbp
                          text: qsTr("GBPRUB")
                      }
                      RadioButton {
+                         id:cny
                          text: qsTr("CNYRUB")
                      }
                      RadioButton {
+                         id:jpy
                          text: qsTr("JPYRUB")
                      }
                      RadioButton {
+                         id:hkd
                          text: qsTr("HKDRUB")
                      }
                      RadioButton {
+                         id:tryy
                          text: qsTr("TRYRUB")
                      }
+
+
                  }
 
             }
@@ -324,8 +285,10 @@ Window
             {
 
              Layout.fillWidth: true
-                Label{
+
+             Label{
                     text: "Operations"
+                    anchors.margins: 20
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
                 }

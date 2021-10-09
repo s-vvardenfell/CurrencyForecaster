@@ -28,6 +28,17 @@ double DataBaseHandler::getAccountBalance() const
     return res->getDouble("balance");
 }
 
+double DataBaseHandler::getCurrencyExchangeRate(const string &currency)
+{
+    std::unique_ptr<sql::PreparedStatement> pstmt{ connection_->prepareStatement(
+    "SELECT price FROM currencies WHERE type = ?;") };
+
+    pstmt->setString(1, currency);
+    unique_ptr<sql::ResultSet> res { pstmt->executeQuery() };
+    res->next();
+    return res->getDouble(1);
+}
+
 bool DataBaseHandler::updateBankAccount(int sum) const
 {
     std::unique_ptr<sql::Statement> stmt{ connection_->createStatement()};

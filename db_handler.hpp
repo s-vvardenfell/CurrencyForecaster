@@ -35,6 +35,7 @@ public:
     bool insertBuySellOperation(const Purchase& purchase);
     void insertCurrencyExchangeRateToDB();
     double getAccountBalance() const;
+    double getCurrencyExchangeRate(const std::string& currency = "USDRUB");
     bool updateBankAccount(int amount) const;
     std::vector<Purchase> getActualPurchases() const;
     std::vector<BalanceData> getBalanceHistory() const;

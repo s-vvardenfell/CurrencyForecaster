@@ -12,11 +12,6 @@ Parser::Parser() :curl_handler_(nullptr)
 
 }
 
-double Parser::getCurrentExcangeRate()
-{
-    return 78.45;
-}
-
 std::vector<CurrencyExchangeData> Parser::parseCurrencyExchangeRate() const
 {
     const std::string url{settings_.at(2)};
